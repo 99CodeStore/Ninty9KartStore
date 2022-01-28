@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32106.194
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NintyNineKartStore.Web", "NintyNineKartStore.Web\NintyNineKartStore.Web.csproj", "{581DA4F8-29E2-45A5-BA3A-C5CF00C3E4A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NintyNineKartStore.Web", "NintyNineKartStore.Web\NintyNineKartStore.Web.csproj", "{581DA4F8-29E2-45A5-BA3A-C5CF00C3E4A9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI.Web", "UI.Web", "{69FEEE0A-29BF-401E-BE17-B8444A0F5185}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,6 +20,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{581DA4F8-29E2-45A5-BA3A-C5CF00C3E4A9} = {69FEEE0A-29BF-401E-BE17-B8444A0F5185}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {52070125-0B74-4BD2-AB18-F0A1213A6580}
