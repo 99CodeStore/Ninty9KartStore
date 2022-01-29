@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="Repository\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -15,6 +14,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="8.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NintyNineKartStore.Core\NintyNineKartStore.Core.csproj" />
+    <ProjectReference Include="..\NintyNineKartStore.Service\NintyNineKartStore.Service.csproj" />
   </ItemGroup>
 
 </Project>
