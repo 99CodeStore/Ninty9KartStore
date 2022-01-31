@@ -2,14 +2,10 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
+using NintyNineKartStore.Service.Models;
 using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace NintyNineKartStore.Web
+namespace NintyNineKartStore.Service.Configuration
 {
     public static class ServiceExtension
     {
@@ -19,7 +15,9 @@ namespace NintyNineKartStore.Web
         }
 
         public static void ConfigureIdentity(this IServiceCollection serviceCollection)
-        { }
+        {
+        
+        }
 
         public static void ConfigureExceptionHandler(this IApplicationBuilder builder)
         {
@@ -47,11 +45,5 @@ namespace NintyNineKartStore.Web
 
 
 
-    }
-    public class Error
-    {
-        public int StatusCode;
-        public string Message;
-        public override string ToString() => JsonConvert.SerializeObject(this);
     }
 }

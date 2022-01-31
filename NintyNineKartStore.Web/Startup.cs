@@ -4,7 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NintyNineKartStore.Core.Interfaces;
 using NintyNineKartStore.Data;
+using NintyNineKartStore.Data.Repository;
+using NintyNineKartStore.Service.Configuration;
+using NintyNineKartStore.Service.Configurations;
 using Serilog.Context;
 
 namespace NintyNineKartStore.Web
@@ -28,13 +32,19 @@ namespace NintyNineKartStore.Web
             });
 
             services.AddControllersWithViews();
+
             services.AddRazorPages().AddRazorRuntimeCompilation();
+
+            services.AddAutoMapper(typeof(MapperInitializer));
+
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.ConfigureExceptionHandler(); // Configuring Global Error handling
+            app.ConfigureExceptionHandler(); // Configuring Global Error handling and Logging
 
             if (env.IsDevelopment())
             {
