@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NintyNineKartStore.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,8 @@ namespace NintyNineKartStore.Data
         {
 
         }
+
+        public DbSet<Category> Categories;
 
     }
 }
