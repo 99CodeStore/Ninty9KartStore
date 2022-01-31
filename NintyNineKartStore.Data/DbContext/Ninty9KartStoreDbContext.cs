@@ -15,7 +15,7 @@ namespace NintyNineKartStore.Data
 
         }
 
-        public DbSet<Category> Categories;
+        public DbSet<Category> Categories { get; set; }
 
     }
 }
