@@ -1,8 +1,40 @@
-﻿
+﻿@model IEnumerable<CategoryDto>;
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="container pt-4">
+    <div class="row ">
+        <div class="col-6">
+            <h2 class="text-primary">Category List</h2>
+        </div>
 
-<h1>Category</h1>
+        <div class="col-6 text-end">
+            <a type="button" asp-action="Create" asp-area="" asp-controller="Category" class="btn btn-primary"><i class="bi bi-plus-circle-dotted"></i> New Category </a>
+        </div>
+    </div>
+
+    <table class="table-bordered table-striped w-100">
+        <thead>
+            <tr>
+                <th>  Category Name  </th>
+                <th>Display Order</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model)
+            {
+                <tr>
+                    <td>  @obj.Name  </td>
+                    <td>  @obj.DisplayOrder   </td>
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+</div>
+
+
 

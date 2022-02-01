@@ -4,6 +4,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.32106.194
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NintyNineKartStore.Web", "NintyNineKartStore.Web\NintyNineKartStore.Web.csproj", "{581DA4F8-29E2-45A5-BA3A-C5CF00C3E4A9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FC719A23-3DC1-4062-8D80-34E64E8E1C34} = {FC719A23-3DC1-4062-8D80-34E64E8E1C34}
+		{7F657974-818C-4C40-B2DE-0F4B198A771C} = {7F657974-818C-4C40-B2DE-0F4B198A771C}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI.Web", "UI.Web", "{69FEEE0A-29BF-401E-BE17-B8444A0F5185}"
 EndProject
@@ -11,20 +15,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure.Ioc", "Infra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure.Data", "Infrastructure.Data", "{60705116-E712-4092-8B86-55E491CDCFC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NintyNineKartStore.Data", "NintyNineKartStore.Data\NintyNineKartStore.Data.csproj", "{B7BB6FBA-5E7A-4B11-9046-B2CB4F76EBD3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NintyNineKartStore.Data", "NintyNineKartStore.Data\NintyNineKartStore.Data.csproj", "{B7BB6FBA-5E7A-4B11-9046-B2CB4F76EBD3}"
 	ProjectSection(ProjectDependencies) = postProject
 		{FC719A23-3DC1-4062-8D80-34E64E8E1C34} = {FC719A23-3DC1-4062-8D80-34E64E8E1C34}
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application.Core", "Application.Core", "{A537693C-9B37-41ED-B6D7-044EB0493057}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NintyNineKartStore.Core", "NintyNineKartStore.Core\NintyNineKartStore.Core.csproj", "{FC719A23-3DC1-4062-8D80-34E64E8E1C34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NintyNineKartStore.Core", "NintyNineKartStore.Core\NintyNineKartStore.Core.csproj", "{FC719A23-3DC1-4062-8D80-34E64E8E1C34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NintyNineKartStore.Infrastructure.IoC", "NintyNineKartStore.Infrastructure.IoC\NintyNineKartStore.Infrastructure.IoC.csproj", "{0512C2C1-9CEF-4E83-A734-78E6F9A78321}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NintyNineKartStore.Infrastructure.IoC", "NintyNineKartStore.Infrastructure.IoC\NintyNineKartStore.Infrastructure.IoC.csproj", "{0512C2C1-9CEF-4E83-A734-78E6F9A78321}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application.Services", "Application.Services", "{BDA9D18B-A5C5-49D8-BDB7-1A3FE7990075}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NintyNineKartStore.Service", "NintyNineKartStore.Service\NintyNineKartStore.Service.csproj", "{7F657974-818C-4C40-B2DE-0F4B198A771C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NintyNineKartStore.Service", "NintyNineKartStore.Service\NintyNineKartStore.Service.csproj", "{7F657974-818C-4C40-B2DE-0F4B198A771C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

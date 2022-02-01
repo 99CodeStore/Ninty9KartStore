@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/NintyNineKartStore.Service/Services/Category.cs
+/NintyNineKartStore.Service/Interfaces/ICategoryService.cs
