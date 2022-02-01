@@ -37,6 +37,11 @@ namespace NintyNineKartStore.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([FromForm] CreateCategoryDto newCategoryDto)
         {
+            if (newCategoryDto.Name== newCategoryDto.DisplayOrder.ToString())
+            {
+                ModelState.AddModelError("name","The DisplayOrder can not be exactly match the Name.");
+            }
+
             if (ModelState.IsValid)
             {
                 var newCategory = maper.Map<Category>(newCategoryDto);
