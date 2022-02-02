@@ -1,14 +1,14 @@
-﻿@model CreateCategoryDto
+﻿@model CategoryDto
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<form method="post" asp-controller="Category" >
+<form method="post" asp-controller="Category" asp-action="Update" >
     <div class="border p-3 mt-4">
         <div class="row pb-2">
-            <h2 class="text-primary"> Create Category </h2>
+            <h2 class="text-primary"> Edit Category </h2>
             <hr />
         </div>
         <div asp-validation-summary="All" class="text-danger"> </div>
@@ -22,13 +22,17 @@
             <input asp-for="DisplayOrder" class="form-control" />
             <span asp-validation-for="DisplayOrder" class="text-danger"></span>
         </div>
-        <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle">&nbsp;</i> Create</button>
+
+        <input type="hidden" asp-for="Id" />
+
+        <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle">&nbsp;</i> Update</button>
         <a asp-controller="Category" asp-action="Index" class="btn btn-secondary">Back To List</a>
     </div>
 </form>
 
 @section Scripts{
-    @{ 
+    @{
         <partial name="_ValidationScriptsPartial" />
     }
 }
+

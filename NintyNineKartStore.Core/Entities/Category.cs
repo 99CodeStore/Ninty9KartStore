@@ -9,7 +9,7 @@ namespace NintyNineKartStore.Core.Entities
     public class Category
     {
         [Key]
-        public int Id { get; set; }
+        public uint Id { get; set; }
         [Required(ErrorMessage ="Category Name is required!!")]
         [StringLength(20, MinimumLength = 3, ErrorMessage = "The Category Name should be between 5 to 15 characters")]
         public string Name { get; set; }

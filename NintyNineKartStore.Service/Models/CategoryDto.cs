@@ -9,7 +9,7 @@ namespace NintyNineKartStore.Service.Models
         [Required(ErrorMessage = "Category Name is required!!")]
         [StringLength(20, MinimumLength = 3, ErrorMessage = "The Category Name should be between 5 to 15 characters")]
         public string Name { get; set; }
-        
+
         [DisplayName("Display Order")]
         [Required(ErrorMessage = "Display Order is required!!")]
         [Range(1, 500, ErrorMessage = "Display Order must be between 1 to 500 only!!")]
@@ -17,7 +17,7 @@ namespace NintyNineKartStore.Service.Models
 
         public DateTime CreatedOn { get; set; } = DateTime.Now;
     }
-   
+
     public class UpdateCategoryDto : CreateCategoryDto
     {
 
@@ -26,6 +26,11 @@ namespace NintyNineKartStore.Service.Models
     public class CategoryDto : CreateCategoryDto
     {
         [Required]
-        public int Id { get; set; }
+        public uint Id { get; set; }
+    }
+    public class DeleteCategoryDto
+    {
+        [Required]
+        public uint Id { get; set; }
     }
 }
