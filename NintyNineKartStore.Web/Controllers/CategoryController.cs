@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using NintyNineKartStore.Core.Entities;
 using NintyNineKartStore.Core.Interfaces;
 using NintyNineKartStore.Service.Models;
@@ -15,7 +16,8 @@ namespace NintyNineKartStore.Web.Controllers
 
 
         public CategoryController(IUnitOfWork unitOfWork,
-            IMapper maper
+            IMapper maper,
+            ILogger<CategoryController> logger
             )
         {
             this.unitOfWork = unitOfWork;
@@ -49,6 +51,8 @@ namespace NintyNineKartStore.Web.Controllers
 
                 await unitOfWork.Categories.Insert(newCategory);
                 await unitOfWork.Save();
+
+                TempData["success"] = $"{newCategory.Name} Created successfully.";
 
                 return RedirectToAction("Index");
             }
@@ -107,6 +111,8 @@ namespace NintyNineKartStore.Web.Controllers
 
                 await unitOfWork.Save();
 
+                TempData["success"] = $"{categoryDto.Name} Updated successfully.";
+
                 return RedirectToAction("Index");
             }
             else
@@ -116,7 +122,7 @@ namespace NintyNineKartStore.Web.Controllers
         }
        
         
-        [HttpPost]
+        [HttpPost,ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeletePost(uint? id)
         {
@@ -127,6 +133,8 @@ namespace NintyNineKartStore.Web.Controllers
 
             await unitOfWork.Categories.Delete(id.Value);
             await unitOfWork.Save();
+
+            TempData["success"] = $"Category Deleted successfully.";
 
             return RedirectToAction("Index");
         }
