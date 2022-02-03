@@ -1,0 +1,26 @@
+﻿@model CoverTypeDto;
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post" asp-controller="CoverType" asp-action="Delete">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary"> Delete CoverType </h2>
+            <hr />
+        </div>
+        <div asp-validation-summary="All" class="text-danger"> </div>
+        <div class="mb-3">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" readonly="readonly" disabled="disabled" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <input type="hidden" asp-for="Id" />
+
+        <button type="submit" class="btn btn-danger"><i class="bi bi-check-circle">&nbsp;</i> Proceed To Delete</button>
+        <a asp-controller="Category" asp-action="Index" class="btn btn-secondary">Back To List</a>
+    </div>
+</form>

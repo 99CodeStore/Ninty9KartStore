@@ -10,8 +10,8 @@ using NintyNineKartStore.Data;
 namespace NintyNineKartStore.Data.Migrations
 {
     [DbContext(typeof(Ninty9KartStoreDbContext))]
-    [Migration("20220131065205_AddCategoryToDb")]
-    partial class AddCategoryToDb
+    [Migration("20220203074248_AddCoverTypeEntity")]
+    partial class AddCoverTypeEntity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -42,6 +42,26 @@ namespace NintyNineKartStore.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Category");
+                });
+
+            modelBuilder.Entity("NintyNineKartStore.Core.Entities.CoverType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CoverType");
                 });
 #pragma warning restore 612, 618
         }

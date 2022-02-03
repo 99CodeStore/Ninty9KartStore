@@ -25,10 +25,7 @@ namespace NintyNineKartStore.Core.Interfaces
             );
         Task Insert(T entity);
         Task InsertRange(IEnumerable<T> entities);
-        Task Delete(uint Id);
+        Task Delete(int Id);
         void DeleteRange(IEnumerable<T> Entities);
-        void Update(T entity);
-
     }
-    
 }

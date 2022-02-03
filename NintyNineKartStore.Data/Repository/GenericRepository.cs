@@ -21,7 +21,7 @@ namespace NintyNineKartStore.Data.Repository
             db = context.Set<T>();
 
         }
-        public async Task Delete(uint Id)
+        public async Task Delete(int Id)
         {
             var entity = await db.FindAsync(Id);
             db.Remove(entity);
@@ -108,10 +108,10 @@ namespace NintyNineKartStore.Data.Repository
             await db.AddRangeAsync(entities);
         }
 
-        public void Update(T entity)
-        {
-            db.Attach(entity);
-            dbContext.Entry(entity).State = EntityState.Modified;
-        }
+        //public void Update(T entity)
+        //{
+        //    db.Attach(entity);
+        //    dbContext.Entry(entity).State = EntityState.Modified;
+        //}
     }
 }

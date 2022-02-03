@@ -16,6 +16,11 @@ namespace NintyNineKartStore.Data
         }
 
         public DbSet<Category> Categories { get; set; }
+        public DbSet<CoverType> CoverTypes { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);         
+        }
     }
 }

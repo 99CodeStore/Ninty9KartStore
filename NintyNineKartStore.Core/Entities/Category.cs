@@ -8,9 +8,10 @@ namespace NintyNineKartStore.Core.Entities
     [Table("Category")]
     public class Category
     {
-        [Key]
-        public uint Id { get; set; }
-        [Required(ErrorMessage ="Category Name is required!!")]
+
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        [Required(ErrorMessage = "Category Name is required!!")]
         [StringLength(20, MinimumLength = 3, ErrorMessage = "The Category Name should be between 5 to 15 characters")]
         public string Name { get; set; }
         [DisplayName("Display Order")]

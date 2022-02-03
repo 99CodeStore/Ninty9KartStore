@@ -13,7 +13,7 @@ namespace NintyNineKartStore.Web.Controllers
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper maper;
-
+        private readonly ILogger<CategoryController> logger;
 
         public CategoryController(IUnitOfWork unitOfWork,
             IMapper maper,
@@ -22,7 +22,7 @@ namespace NintyNineKartStore.Web.Controllers
         {
             this.unitOfWork = unitOfWork;
             this.maper = maper;
-
+            this.logger = logger;
         }
         public async Task<IActionResult> Index()
         {
@@ -62,7 +62,7 @@ namespace NintyNineKartStore.Web.Controllers
             }
         }
 
-        public async Task<IActionResult> Edit(uint? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || id == 0)
             {
@@ -82,7 +82,7 @@ namespace NintyNineKartStore.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(uint? id, [FromForm] UpdateCategoryDto categoryDto)
+        public async Task<IActionResult> Update(int? id, [FromForm] UpdateCategoryDto categoryDto)
         {
 
             if (!ModelState.IsValid || id < 1)
@@ -124,7 +124,7 @@ namespace NintyNineKartStore.Web.Controllers
         
         [HttpPost,ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeletePost(uint? id)
+        public async Task<IActionResult> DeletePost(int? id)
         {
             if ( !ModelState.IsValid || id < 1)
             {
@@ -139,7 +139,7 @@ namespace NintyNineKartStore.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Delete(uint? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || id == 0)
             {

@@ -10,6 +10,9 @@ namespace NintyNineKartStore.Service.Configurations
         {
             CreateMap<Category, CategoryDto>().ReverseMap();
             CreateMap<Category, CreateCategoryDto>().ReverseMap();
+
+            CreateMap<CoverType, CoverTypeDto>().ReverseMap();
+            CreateMap<CoverType, CreateCoverTypeDto>().ReverseMap();
         }
     }
 }

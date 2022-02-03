@@ -10,8 +10,8 @@ using NintyNineKartStore.Data;
 namespace NintyNineKartStore.Data.Migrations
 {
     [DbContext(typeof(Ninty9KartStoreDbContext))]
-    [Migration("20220202052506_IdChangesOnCategory")]
-    partial class IdChangesOnCategory
+    [Migration("20220203052550_AddCategoryEntity")]
+    partial class AddCategoryEntity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,10 +23,10 @@ namespace NintyNineKartStore.Data.Migrations
 
             modelBuilder.Entity("NintyNineKartStore.Core.Entities.Category", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");

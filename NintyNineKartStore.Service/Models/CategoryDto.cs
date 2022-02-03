@@ -26,11 +26,11 @@ namespace NintyNineKartStore.Service.Models
     public class CategoryDto : CreateCategoryDto
     {
         [Required]
-        public uint Id { get; set; }
+        public int Id { get; set; }
     }
     public class DeleteCategoryDto
     {
         [Required]
-        public uint Id { get; set; }
+        public int Id { get; set; }
     }
 }
