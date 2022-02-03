@@ -7,7 +7,7 @@ namespace NintyNineKartStore.Service.Models
     public class CreateCategoryDto
     {
         [Required(ErrorMessage = "Category Name is required!!")]
-        [StringLength(20, MinimumLength = 3, ErrorMessage = "The Category Name should be between 5 to 15 characters")]
+        [StringLength(20, MinimumLength = 3, ErrorMessage = "The Category Name should be between 5 to 20 characters")]
         public string Name { get; set; }
 
         [DisplayName("Display Order")]

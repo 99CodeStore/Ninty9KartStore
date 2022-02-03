@@ -14,7 +14,7 @@ namespace NintyNineKartStore.Core.Entities
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Required(ErrorMessage = "CoverType Name is required!!")]
-        [StringLength(10, MinimumLength = 3, ErrorMessage = "The CoverType Name should be between 5 to 10 characters")]
+        [StringLength(20, MinimumLength = 3, ErrorMessage = "The CoverType Name should be between 5 to 20 characters")]
         public string Name { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.Now;
     }
