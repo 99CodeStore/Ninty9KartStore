@@ -26,7 +26,8 @@ namespace NintyNineKartStore.Web
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<Ninty9KartStoreDbContext>(options => {
+            services.AddDbContext<Ninty9KartStoreDbContext>(options =>
+            {
                 options.UseSqlServer(
                         Configuration.GetConnectionString("DefaultConnection"));
             });
@@ -72,13 +73,16 @@ namespace NintyNineKartStore.Web
                 await next.Invoke();
             });
 
-            app.UseAuthorization(); 
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}"
+                    );
+
+
             });
         }
     }
