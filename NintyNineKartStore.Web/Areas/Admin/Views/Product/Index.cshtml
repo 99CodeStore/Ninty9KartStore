@@ -1,0 +1,54 @@
+﻿@model IEnumerable<ProductDto>;
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container pt-4">
+    <div class="row ">
+        <div class="col-6">
+            <h2 class="text-primary">Product List</h2>
+        </div>
+
+        <div class="col-6 text-end">
+            <a type="button" asp-action="Upsert" asp-controller="Product" class="btn btn-primary"><i class="bi bi-plus-circle-dotted"></i> New Product </a>
+        </div>
+    </div>
+
+    <table class="table table-hover table-bordered table-striped w-100">
+        <thead>
+            <tr>
+                <th>  Product Name  </th>
+                <th>Serial No</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th>Manufacturer</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model)
+            {
+            <tr>
+                <td>  @obj.Title  </td>
+                <td>  @obj.SerialNo   </td>
+                <td>  @obj.Price   </td>
+                <td>  @obj.Category.Name  </td>
+                <td>  @obj.Manufactuere   </td>
+                <td class="text-end">
+                    <div class="btn-group" role="group">
+                        <a class="btn btn-outline-primary" asp-controller="Product" asp-action="Edit" asp-route-id="@obj.Id"> <i class="bi bi-pencil-square">&nbsp;</i> Edit</a>
+                        <a class="btn btn-outline-danger" asp-controller="Product" asp-action="Delete" asp-route-id="@obj.Id"> <i class="bi bi-trash">&nbsp;</i> Delete</a>
+                    </div>
+                </td>
+            </tr>
+            }
+
+        </tbody>
+
+    </table>
+</div>
+
+
+

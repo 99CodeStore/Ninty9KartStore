@@ -17,10 +17,15 @@ namespace NintyNineKartStore.Data.Repository
             Categories = new CategoryRepository(context);
             CoverTypes = new CoverTypeRepository(context);
 
+            Products = new ProductRepository(context);
+
         }
 
         public ICategoryRepository Categories { get; private set; }
         public ICoverTypeRepository CoverTypes { get; private set; }
+
+        public IProductRepository Products { get; private set; }
+
 
         public void Dispose()
         {

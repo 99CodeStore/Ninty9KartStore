@@ -9,5 +9,7 @@ namespace NintyNineKartStore.Core.Interfaces
         Task Save();
         ICategoryRepository Categories { get; }
         ICoverTypeRepository CoverTypes { get; }
+
+        IProductRepository Products { get; }
     }
 }

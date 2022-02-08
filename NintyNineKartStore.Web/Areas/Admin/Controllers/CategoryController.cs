@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace NintyNineKartStore.Web.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork unitOfWork;

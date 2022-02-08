@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using NintyNineKartStore.Core.Entities;
 using NintyNineKartStore.Service.Models;
+using System.Collections.Generic;
 
 namespace NintyNineKartStore.Service.Configurations
 {
@@ -13,6 +14,12 @@ namespace NintyNineKartStore.Service.Configurations
 
             CreateMap<CoverType, CoverTypeDto>().ReverseMap();
             CreateMap<CoverType, CreateCoverTypeDto>().ReverseMap();
+
+            CreateMap<Product, ProductDto>().ReverseMap();
+            CreateMap<Product, CreateProductDto>().ReverseMap();
+
+           // CreateMap<IList<Product>, IList<ProductDto>>().ReverseMap();
+
         }
     }
 }

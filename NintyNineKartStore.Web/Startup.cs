@@ -32,11 +32,11 @@ namespace NintyNineKartStore.Web
                         Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            services.AddAutoMapper(typeof(MapperInitializer));
+
             services.AddControllersWithViews();
 
             services.AddRazorPages().AddRazorRuntimeCompilation();
-
-            services.AddAutoMapper(typeof(MapperInitializer));
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
