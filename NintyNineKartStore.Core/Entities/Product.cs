@@ -26,7 +26,7 @@ namespace NintyNineKartStore.Core.Entities
         public string SerialNo { get; set; }
 
         [Required(ErrorMessage = "Product Manufactuere is required!!")]
-        public string Manufactuere { get; set; }
+        public string Manufacturer { get; set; }
 
         [DisplayName("Max. Retail Price")]  
         public double Price { get; set; }

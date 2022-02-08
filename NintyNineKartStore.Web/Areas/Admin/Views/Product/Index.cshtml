@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    <table class="table table-hover table-bordered table-striped w-100">
+    <table id="ProductListTable" class="table table-hover table-bordered table-striped w-100">
         <thead>
             <tr>
                 <th>  Product Name  </th>
@@ -28,14 +28,14 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var obj in Model)
+            @*@foreach (var obj in Model)
             {
             <tr>
                 <td>  @obj.Title  </td>
                 <td>  @obj.SerialNo   </td>
                 <td>  @obj.Price   </td>
-                <td>  @obj.Category.Name  </td>
-                <td>  @obj.Manufactuere   </td>
+                <td>  obj.Category.Name  </td>
+                <td>  @obj.Manufacturer   </td>
                 <td class="text-end">
                     <div class="btn-group" role="group">
                         <a class="btn btn-outline-primary" asp-controller="Product" asp-action="Edit" asp-route-id="@obj.Id"> <i class="bi bi-pencil-square">&nbsp;</i> Edit</a>
@@ -43,12 +43,15 @@
                     </div>
                 </td>
             </tr>
-            }
+            }*@
 
         </tbody>
 
     </table>
 </div>
 
+@section Scripts{
+    <script src="~/js/admin/product.js" async></script>
+}
 
 

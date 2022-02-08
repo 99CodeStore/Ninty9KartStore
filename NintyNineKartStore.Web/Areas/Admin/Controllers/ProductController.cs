@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -7,7 +8,9 @@ using NintyNineKartStore.Core.Entities;
 using NintyNineKartStore.Core.Interfaces;
 using NintyNineKartStore.Service.Models;
 using NintyNineKartStore.Web.Areas.Admin.ViewModels;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace NintyNineKartStore.Web.Controllers
@@ -18,15 +21,18 @@ namespace NintyNineKartStore.Web.Controllers
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper maper;
         private readonly ILogger<ProductController> logger;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
         public ProductController(IUnitOfWork unitOfWork,
             IMapper maper,
-            ILogger<ProductController> logger
+            ILogger<ProductController> logger,
+            IWebHostEnvironment webHostEnvironment
             )
         {
             this.unitOfWork = unitOfWork;
             this.maper = maper;
             this.logger = logger;
+            this.webHostEnvironment = webHostEnvironment;
         }
         public async Task<IActionResult> Index()
         {
@@ -100,42 +106,65 @@ namespace NintyNineKartStore.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert(int? id, [FromForm] UpdateProductDto productDto, IFormFile file)
+        public async Task<IActionResult> Upsert(int? id, [FromForm] ProductViewModel productViewModel, IFormFile? file)
         {
-
-            if (!ModelState.IsValid || id < 1)
-            {
-                return NotFound();
-            }
-
-            var product = await unitOfWork.Products.Get(x => x.Id == id.Value);
-
-            if (product == null)
-            {
-                NotFound();
-            }
-
-            //if (productDto.Title == productDto.DisplayOrder.ToString())
-            //{
-            //    ModelState.AddModelError("name", "The DisplayOrder can not be exactly match the Name.");
-            //}
 
             if (ModelState.IsValid)
             {
+                var wwwRootPath = webHostEnvironment.WebRootPath;
 
-                maper.Map(productDto, product);
+                if (file != null)
+                {
+                    string fileName = Guid.NewGuid().ToString();
 
-                unitOfWork.Products.Update(product);
+                    var uploads = Path.Combine(wwwRootPath, @"images\products\");
+                    var extension = Path.GetExtension(file.FileName);
 
-                await unitOfWork.Save();
+                    using (var fileStream = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+                    productViewModel.Product.ImageUrl = @"\images\products\" + fileName + extension;
+                }
 
-                TempData["success"] = $"{productDto.Title} Updated successfully.";
+                Product product;
+
+                if (id.HasValue && id > 0)
+                {
+                    product = await unitOfWork.Products.Get(x => x.Id == id.GetValueOrDefault());
+
+                    if (product == null)
+                    {
+                        NotFound();
+                    }
+
+                    maper.Map(productViewModel.Product, product);
+
+                    unitOfWork.Products.Update(product);
+
+                    await unitOfWork.Save();
+
+                    TempData["success"] = $"{productViewModel.Product.Title} Updated successfully.";
+
+                }
+                else
+                {
+
+                    product = maper.Map<Product>(productViewModel.Product);
+
+                    await unitOfWork.Products.Insert(product);
+
+                    await unitOfWork.Save();
+
+                    TempData["success"] = $"{productViewModel.Product.Title} Created successfully.";
+
+                }
 
                 return RedirectToAction("Index");
             }
             else
             {
-                return View(productDto);
+                return View(productViewModel);
             }
         }
 
@@ -174,5 +203,16 @@ namespace NintyNineKartStore.Web.Controllers
             var productDto = maper.Map<ProductDto>(product);
             return View(productDto);
         }
+
+        #region API Calls
+        [HttpGet]
+        public async Task<IActionResult> GetPaggedList(PagedRequestInput pagedRequestInput)
+        {
+            var products = await unitOfWork.Products.GetPagedList(maper.Map<PagedRequest>(pagedRequestInput) , null,null,new List<string> { "Category" });
+            IList<ProductDto> result = maper.Map<IList<ProductDto>>(products);
+            return Json(new { Data = result });
+        }
+
+        #endregion
     }
 }

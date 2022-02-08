@@ -62,12 +62,17 @@
             <span asp-validation-for="Product.Price100" class="text-danger"></span>
         </div>
 
-        <div class="mb-3">
-            <label asp-for="Product.ImageUrl"></label>
-            <input type="file" class="form-control" />
-            <span asp-validation-for="Product.ImageUrl" class="text-danger"></span>
+        <div class="mb-3 col-6">
+            <label asp-for="Product.Manufacturer"></label>
+            <input asp-for="Product.Manufacturer" class="form-control" />
+            <span asp-validation-for="Product.Manufacturer" class="text-danger"></span>
         </div>
-        <div id="uploadBox"></div>
+        <div class="mb-3 col-6">
+            <label asp-for="Product.ImageUrl"></label>
+            <input type="file" id="uploadBox" name="file" class="form-control" />
+            @*<span asp-validation-for="Product.ImageUrl" class="text-danger"></span>*@
+        </div>
+         
         <div class="mb-3 col-6">
             <label asp-for="Product.CategoryId"></label>
             <select asp-for="Product.CategoryId" class="form-select" asp-items="@Model.CategoryList">

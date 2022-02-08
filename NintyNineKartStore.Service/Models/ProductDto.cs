@@ -6,7 +6,7 @@ namespace NintyNineKartStore.Service.Models
     public class CreateProductDto
     {
         [Required(ErrorMessage = "Product Title is required!!")]
-        [StringLength(30, MinimumLength = 3, ErrorMessage = "The Product Title should be between 5 to 30 characters")]
+        [StringLength(30, MinimumLength = 3, ErrorMessage = "The Product Title should be between 3 to 30 characters")]
         public string Title { get; set; }
 
         public string Description { get; set; }
@@ -16,7 +16,7 @@ namespace NintyNineKartStore.Service.Models
         public string SerialNo { get; set; }
 
         [Required(ErrorMessage = "Product Manufactuere is required!!")]
-        public string Manufactuere { get; set; }
+        public string Manufacturer { get; set; }
 
         [DisplayName("Max. Retail Price")]
         public double Price { get; set; }

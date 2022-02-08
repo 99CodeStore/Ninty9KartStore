@@ -18,7 +18,7 @@ namespace NintyNineKartStore.Service.Configurations
             CreateMap<Product, ProductDto>().ReverseMap();
             CreateMap<Product, CreateProductDto>().ReverseMap();
 
-           // CreateMap<IList<Product>, IList<ProductDto>>().ReverseMap();
+            CreateMap<PagedRequest, PagedRequestInput>().ReverseMap();
 
         }
     }
