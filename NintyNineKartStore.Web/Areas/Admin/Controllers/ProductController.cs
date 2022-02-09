@@ -41,37 +41,6 @@ namespace NintyNineKartStore.Web.Controllers
             return View(result);
         }
 
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([FromForm] CreateProductDto newProductDto)
-        {
-            //if (newProductDto.Name == newProductDto.DisplayOrder.ToString())
-            //{
-            //    ModelState.AddModelError("name", "The DisplayOrder can not be exactly match the Name.");
-            //}
-
-            if (ModelState.IsValid)
-            {
-                var newProduct = maper.Map<Product>(newProductDto);
-
-                await unitOfWork.Products.Insert(newProduct);
-                await unitOfWork.Save();
-
-                TempData["success"] = $"{newProduct.Title} Created successfully.";
-
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                return View(newProductDto);
-            }
-        }
-
         public async Task<IActionResult> Upsert(int? id)
         {
             var cats = await unitOfWork.Categories.GetAll();
@@ -119,6 +88,16 @@ namespace NintyNineKartStore.Web.Controllers
 
                     var uploads = Path.Combine(wwwRootPath, @"images\products\");
                     var extension = Path.GetExtension(file.FileName);
+
+                    // Deleting Existing File.
+                    if (!string.IsNullOrEmpty(productViewModel.Product.ImageUrl))
+                    {
+                        var oldImagePath = Path.Combine(wwwRootPath, productViewModel.Product.ImageUrl.TrimStart('\\'));
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
 
                     using (var fileStream = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
                     {
@@ -169,48 +148,43 @@ namespace NintyNineKartStore.Web.Controllers
         }
 
 
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeletePost(int? id)
+        #region API Calls
+        [HttpGet]
+        public async Task<IActionResult> GetPaggedList(PagedRequestInput pagedRequestInput)
         {
-            if (!ModelState.IsValid || id < 1)
+            var products = await unitOfWork.Products.GetPagedList(maper.Map<PagedRequest>(pagedRequestInput), null, null, new List<string> { "Category" });
+            IList<ProductDto> result = maper.Map<IList<ProductDto>>(products);
+            return Json(new { Data = result });
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int? id)
+        {
+
+            var product = await unitOfWork.Products.Get(x => x.Id == id);
+            if (product == null)
             {
-                return NotFound();
+                return Json(new { success = false, message = "Error While Deleting." });
+            }
+
+
+            // Deleting Existing File.
+            if (!string.IsNullOrEmpty(product.ImageUrl))
+            {
+
+                var oldImagePath = Path.Combine(webHostEnvironment.WebRootPath, product.ImageUrl.TrimStart('\\'));
+
+                if (System.IO.File.Exists(oldImagePath))
+                {
+                    System.IO.File.Delete(oldImagePath);
+                }
             }
 
             await unitOfWork.Products.Delete(id.Value);
             await unitOfWork.Save();
 
-            TempData["success"] = $"Product Deleted successfully.";
+            return Json(new { success = true, message = $"{product.Title} Product Deleted successfully." });
 
-            return RedirectToAction("Index");
-        }
-
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-
-            var product = await unitOfWork.Products.Get(x => x.Id == id);
-
-            if (product == null)
-            {
-                NotFound();
-            }
-
-            var productDto = maper.Map<ProductDto>(product);
-            return View(productDto);
-        }
-
-        #region API Calls
-        [HttpGet]
-        public async Task<IActionResult> GetPaggedList(PagedRequestInput pagedRequestInput)
-        {
-            var products = await unitOfWork.Products.GetPagedList(maper.Map<PagedRequest>(pagedRequestInput) , null,null,new List<string> { "Category" });
-            IList<ProductDto> result = maper.Map<IList<ProductDto>>(products);
-            return Json(new { Data = result });
         }
 
         #endregion

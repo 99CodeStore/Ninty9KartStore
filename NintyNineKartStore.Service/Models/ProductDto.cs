@@ -18,15 +18,15 @@ namespace NintyNineKartStore.Service.Models
         [Required(ErrorMessage = "Product Manufactuere is required!!")]
         public string Manufacturer { get; set; }
 
-        [DisplayName("Max. Retail Price")]
+        [DisplayName("Price for 1 - 50 Units")]
         public double Price { get; set; }
 
         [DisplayName("List Price")]
         public double ListPrice { get; set; }
 
-        [DisplayName("Price for 2 - 50 Units")]
+        [DisplayName("Price for 50 - 100 Units")]
         public double Price50 { get; set; }
-        [DisplayName("Price for 51 - 100 Units")]
+        [DisplayName("Price for 100 and more Units")]
         public double Price100 { get; set; }
        
         [DisplayName("Dealer`s Price")]
@@ -35,11 +35,13 @@ namespace NintyNineKartStore.Service.Models
         public string ImageUrl { get; set; }
 
         [Required]
+        [DisplayName("Category")]
         public int CategoryId { get; set; }
 
         public CategoryDto Category { get; set; }
 
         [Required]
+        [DisplayName("Cover Type")]
         public int CoverTypeId { get; set; }
 
         public CoverTypeDto CoverType { get; set; }
