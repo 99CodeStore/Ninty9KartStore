@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using NintyNineKartStore.Core.Entities;
+using NintyNineKartStore.Core.Interfaces;
+using NintyNineKartStore.Service.Models;
+using NintyNineKartStore.Web.Areas.Customer.ViewModels;
 using NintyNineKartStore.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -13,15 +18,22 @@ namespace NintyNineKartStore.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IUnitOfWork unitOfWork;
+        private readonly IMapper maper;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork, IMapper maper)
         {
-            _logger = logger;
+            this._logger = logger;
+            this.unitOfWork = unitOfWork;
+            this.maper = maper;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(PagedRequestInput pagedRequestInput)
         {
-            return View();
+            var products = await unitOfWork.Products.GetPagedList(maper.Map<PagedRequest>(pagedRequestInput), null, null, new List<string> { "Category" });
+            IList<ProductDto> result = maper.Map<IList<ProductDto>>(products);
+
+            return View(result);
         }
 
         public IActionResult Privacy()
@@ -33,6 +45,20 @@ namespace NintyNineKartStore.Web.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public async Task<ActionResult> Details(int? Id)
+        {
+            var cartObj = new ShoppingCartViewModel()
+            {
+                productDto = maper.Map<ProductDto>(
+                    await unitOfWork.Products.Get(
+                        x => x.Id == Id.GetValueOrDefault()
+                        ,new List<string>() { "Category","CoverType" }
+                        )),
+                Count = 1
+            };
+            return View(cartObj);
         }
     }
 }
