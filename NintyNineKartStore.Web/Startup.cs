@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,6 +32,16 @@ namespace NintyNineKartStore.Web
                 options.UseSqlServer(
                         Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            services.AddDbContext<ApplicationIdentityDbContext>(options =>
+            {
+                options.UseSqlServer(
+                        Configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            services.AddDefaultIdentity<IdentityUser>(
+                options => options.SignIn.RequireConfirmedAccount=true
+                ).AddEntityFrameworkStores<ApplicationIdentityDbContext>();
 
             services.AddAutoMapper(typeof(MapperInitializer));
 
@@ -64,7 +75,7 @@ namespace NintyNineKartStore.Web
 
             app.UseRouting();
 
-            app.UseAuthentication(); // COnfiguring user Authentication
+            app.UseAuthentication(); // Configuring user Authentication
 
             app.Use(async (httpContext, next) =>
             {
@@ -77,12 +88,12 @@ namespace NintyNineKartStore.Web
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}"
                     );
-
-
             });
         }
     }

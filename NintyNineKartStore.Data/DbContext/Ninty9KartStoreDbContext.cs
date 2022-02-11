@@ -10,7 +10,7 @@ namespace NintyNineKartStore.Data
 {
     public class Ninty9KartStoreDbContext : DbContext
     {
-        public Ninty9KartStoreDbContext(DbContextOptions options) : base(options)
+        public Ninty9KartStoreDbContext(DbContextOptions<Ninty9KartStoreDbContext> options) : base(options)
         {
 
         }
