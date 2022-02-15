@@ -45,6 +45,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NintyNineKartStore.Data\NintyNineKartStore.Data.csproj" />
+    <ProjectReference Include="..\NintyNineKartStore.Utility\NintyNineKartStore.Utility.csproj" />
   </ItemGroup>
 
 </Project>

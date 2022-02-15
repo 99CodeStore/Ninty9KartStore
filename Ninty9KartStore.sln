@@ -30,6 +30,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application.Services", "App
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NintyNineKartStore.Service", "NintyNineKartStore.Service\NintyNineKartStore.Service.csproj", "{7F657974-818C-4C40-B2DE-0F4B198A771C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application.Utility", "Application.Utility", "{AC34C23B-1664-44F6-BA88-563196499BA8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NintyNineKartStore.Utility", "NintyNineKartStore.Utility\NintyNineKartStore.Utility.csproj", "{D2ECEAF1-2865-43D2-BDAA-5C9D0D0D84B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +60,10 @@ Global
 		{7F657974-818C-4C40-B2DE-0F4B198A771C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F657974-818C-4C40-B2DE-0F4B198A771C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F657974-818C-4C40-B2DE-0F4B198A771C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2ECEAF1-2865-43D2-BDAA-5C9D0D0D84B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2ECEAF1-2865-43D2-BDAA-5C9D0D0D84B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2ECEAF1-2865-43D2-BDAA-5C9D0D0D84B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2ECEAF1-2865-43D2-BDAA-5C9D0D0D84B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,6 +74,7 @@ Global
 		{FC719A23-3DC1-4062-8D80-34E64E8E1C34} = {A537693C-9B37-41ED-B6D7-044EB0493057}
 		{0512C2C1-9CEF-4E83-A734-78E6F9A78321} = {6033995C-75EB-4DDF-A829-913C7ACAAE44}
 		{7F657974-818C-4C40-B2DE-0F4B198A771C} = {BDA9D18B-A5C5-49D8-BDB7-1A3FE7990075}
+		{D2ECEAF1-2865-43D2-BDAA-5C9D0D0D84B1} = {AC34C23B-1664-44F6-BA88-563196499BA8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {52070125-0B74-4BD2-AB18-F0A1213A6580}

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +11,7 @@ using NintyNineKartStore.Data;
 using NintyNineKartStore.Data.Repository;
 using NintyNineKartStore.Service.Configuration;
 using NintyNineKartStore.Service.Configurations;
+using NintyNineKartStore.Utility;
 using Serilog.Context;
 
 namespace NintyNineKartStore.Web
@@ -39,9 +41,12 @@ namespace NintyNineKartStore.Web
                         Configuration.GetConnectionString("DefaultConnection"));
             });
 
-            services.AddDefaultIdentity<IdentityUser>(
+            services.AddIdentity<IdentityUser,IdentityRole>(
                 options => options.SignIn.RequireConfirmedAccount=true
-                ).AddEntityFrameworkStores<ApplicationIdentityDbContext>();
+                ).AddDefaultTokenProviders()
+                .AddEntityFrameworkStores<ApplicationIdentityDbContext>();
+
+            services.AddSingleton<IEmailSender, EmailSender>();
 
             services.AddAutoMapper(typeof(MapperInitializer));
 
