@@ -18,6 +18,7 @@ namespace NintyNineKartStore.Data.Repository
             CoverTypes = new CoverTypeRepository(context);
 
             Products = new ProductRepository(context);
+            Companies= new CompanyRepository(context);
 
         }
 
@@ -26,6 +27,7 @@ namespace NintyNineKartStore.Data.Repository
 
         public IProductRepository Products { get; private set; }
 
+        public ICompanyRepository Companies { get; private set; }
 
         public void Dispose()
         {

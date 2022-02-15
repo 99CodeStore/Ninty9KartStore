@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NintyNineKartStore.Data;
 
@@ -11,9 +12,10 @@ using NintyNineKartStore.Data;
 namespace NintyNineKartStore.Data.Migrations
 {
     [DbContext(typeof(Ninty9KartStoreDbContext))]
-    partial class Ninty9KartStoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220215064506_CompanyEntityChanges")]
+    partial class CompanyEntityChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

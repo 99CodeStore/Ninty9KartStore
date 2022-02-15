@@ -11,5 +11,7 @@ namespace NintyNineKartStore.Core.Interfaces
         ICoverTypeRepository CoverTypes { get; }
 
         IProductRepository Products { get; }
+
+        ICompanyRepository Companies { get; }
     }
 }

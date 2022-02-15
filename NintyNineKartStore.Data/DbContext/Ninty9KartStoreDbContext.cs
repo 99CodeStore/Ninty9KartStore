@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using NintyNineKartStore.Core.Entities;
 using System;
 using System.Collections.Generic;
@@ -20,6 +20,8 @@ namespace NintyNineKartStore.Data
         public DbSet<CoverType> CoverTypes { get; set; }
 
         public DbSet<Product> Products { get; set; }
+        public DbSet<Company> Companies { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

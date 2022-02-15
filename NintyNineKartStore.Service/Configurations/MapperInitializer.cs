@@ -8,7 +8,9 @@ namespace NintyNineKartStore.Service.Configurations
     public class MapperInitializer : Profile
     {
         public MapperInitializer()
-        {
+        { 
+            CreateMap<PagedRequest, PagedRequestInput>().ReverseMap();
+
             CreateMap<Category, CategoryDto>().ReverseMap();
             CreateMap<Category, CreateCategoryDto>().ReverseMap();
 
@@ -18,7 +20,9 @@ namespace NintyNineKartStore.Service.Configurations
             CreateMap<Product, ProductDto>().ReverseMap();
             CreateMap<Product, CreateProductDto>().ReverseMap();
 
-            CreateMap<PagedRequest, PagedRequestInput>().ReverseMap();
+            CreateMap<Company, CompanyDto>().ReverseMap();
+            CreateMap<Company, CreateCompanyDto>().ReverseMap();
+            CreateMap<Company, UpdateCompanyDto>().ReverseMap();
 
         }
     }

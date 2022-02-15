@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using NintyNineKartStore.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,7 @@ namespace NintyNineKartStore.Data
         {
 
         }
+
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
     }
 }
