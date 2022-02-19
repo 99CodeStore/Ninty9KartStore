@@ -18,8 +18,15 @@ namespace NintyNineKartStore.Data.Repository
             CoverTypes = new CoverTypeRepository(context);
 
             Products = new ProductRepository(context);
-            Companies= new CompanyRepository(context);
+            Companies = new CompanyRepository(context);
 
+            ApplicationUsers = new ApplicationUserRepository(context);
+
+            ShoppingCarts = new ShoppingCartRepository(context);
+
+            OrderHeaders = new OrderHeaderRepository(context);
+
+            OrderDetails= new OrderDetailRepository(context);
         }
 
         public ICategoryRepository Categories { get; private set; }
@@ -28,6 +35,14 @@ namespace NintyNineKartStore.Data.Repository
         public IProductRepository Products { get; private set; }
 
         public ICompanyRepository Companies { get; private set; }
+
+        public IApplicationUserRepository ApplicationUsers { get; private set; }
+
+        public IShoppingCartRepository ShoppingCarts { get; private set; }
+
+        public IOrderHeaderRepository OrderHeaders { get; private set; }
+
+        public IOrderDetailRepository OrderDetails { get; private set; }
 
         public void Dispose()
         {

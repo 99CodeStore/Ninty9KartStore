@@ -66,6 +66,13 @@
                 <label asp-for="Input.Role"></label>
                 <span asp-validation-for="Input.Role" class="text-danger"></span>
             </div>
+            <div class="form-floating  py-2 col-6">
+                <select asp-for="Input.CompanyId" asp-items="@Model.Input.CompanyList" class="form-select" aria-required="true">
+                    <option disabled selected>-- Select Company --</option>
+                </select>
+                <span asp-validation-for="Input.CompanyId" class="text-danger"></span>
+            </div>
+
             <button id="registerSubmit" type="submit" class="w-100 btn btn-primary">Register</button>
         </form>
     </div>
@@ -105,4 +112,19 @@
 
 @section Scripts {
 <partial name="_ValidationScriptsPartial" />
+<script>
+    $(document).ready(function(){
+        $('#Input_Role').change(function(){
+            if($('#Input_Role Option:Selected').text()!=="Company")
+            {
+                $('#Input_CompanyId').hide();
+            }
+            else
+            {
+                $('#Input_CompanyId').show();
+            }
+        });
+         $('#Input_Role').change();
+    });
+</script>
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NintyNineKartStore.Core.Entities;
@@ -10,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace NintyNineKartStore.Web.Controllers
@@ -19,19 +21,19 @@ namespace NintyNineKartStore.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IUnitOfWork unitOfWork;
-        private readonly IMapper maper;
+        private readonly IMapper mapper;
 
-        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork, IMapper maper)
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork, IMapper mapper)
         {
             this._logger = logger;
             this.unitOfWork = unitOfWork;
-            this.maper = maper;
+            this.mapper = mapper;
         }
 
         public async Task<IActionResult> Index(PagedRequestInput pagedRequestInput)
         {
-            var products = await unitOfWork.Products.GetPagedList(maper.Map<PagedRequest>(pagedRequestInput), null, null, new List<string> { "Category" });
-            IList<ProductDto> result = maper.Map<IList<ProductDto>>(products);
+            var products = await unitOfWork.Products.GetPagedList(mapper.Map<PagedRequest>(pagedRequestInput), null, null, new List<string> { "Category" });
+            IList<ProductDto> result = mapper.Map<IList<ProductDto>>(products);
 
             return View(result);
         }
@@ -41,24 +43,26 @@ namespace NintyNineKartStore.Web.Controllers
             return View();
         }
 
+        public async Task<ActionResult> Details(int? ProductId)
+        {
+            var cartObj = new ShoppingCartDto()
+            {
+                ProductDto = mapper.Map<ProductDto>(
+                    await unitOfWork.Products.Get(
+                        x => x.Id == ProductId.GetValueOrDefault()
+                        , new List<string>() { "Category", "CoverType" }
+                        )),
+                ProductId = ProductId.GetValueOrDefault(),
+                Count = 1
+            };
+
+            return View(cartObj);
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public async Task<ActionResult> Details(int? Id)
-        {
-            var cartObj = new ShoppingCartViewModel()
-            {
-                productDto = maper.Map<ProductDto>(
-                    await unitOfWork.Products.Get(
-                        x => x.Id == Id.GetValueOrDefault()
-                        ,new List<string>() { "Category","CoverType" }
-                        )),
-                Count = 1
-            };
-            return View(cartObj);
-        }
     }
 }

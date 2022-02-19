@@ -36,8 +36,8 @@ namespace NintyNineKartStore.Web.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var categories = await unitOfWork.Products.GetAll();
-            IList<ProductDto> result = maper.Map<IList<ProductDto>>(categories);
+            var products = await unitOfWork.Products.GetAll();
+            IList<ProductDto> result = maper.Map<IList<ProductDto>>(products);
             return View(result);
         }
 
@@ -108,9 +108,9 @@ namespace NintyNineKartStore.Web.Controllers
 
                 Product product;
 
-                if (id.HasValue && id > 0)
+                if (productViewModel.Product.Id > 0)
                 {
-                    product = await unitOfWork.Products.Get(x => x.Id == id.GetValueOrDefault());
+                    product = await unitOfWork.Products.Get(x => x.Id == productViewModel.Product.Id);
 
                     if (product == null)
                     {

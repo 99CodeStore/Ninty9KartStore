@@ -1,4 +1,5 @@
-﻿using NintyNineKartStore.Service.Models;
+﻿using NintyNineKartStore.Core.Entities;
+using NintyNineKartStore.Service.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,8 +10,10 @@ namespace NintyNineKartStore.Web.Areas.Customer.ViewModels
 {
     public class ShoppingCartViewModel
     {
-        public ProductDto productDto { get; set; }
-        [Range(1,1000,ErrorMessage="Per Product`s Cart Quantity should be 1 to 1000")]
-        public int Count { get; set; }
+
+        public IList<ShoppingCartDto> ShoppingCartItems { get; set; }
+
+        public OrderHeaderDto OrderHeader { get; set; }
+
     }
 }

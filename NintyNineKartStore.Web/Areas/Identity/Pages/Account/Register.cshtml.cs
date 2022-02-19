@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -17,6 +18,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using NintyNineKartStore.Core.Entities;
+using NintyNineKartStore.Core.Interfaces;
+using NintyNineKartStore.Service.Models;
 using NintyNineKartStore.Utility;
 
 namespace NintyNineKartStore.Web.Areas.Identity.Pages.Account
@@ -30,6 +33,8 @@ namespace NintyNineKartStore.Web.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> roleManager;
+        private readonly IUnitOfWork unitOfWork;
+        private readonly IMapper maper;
         private readonly IUserEmailStore<IdentityUser> emailStore;
 
         public RegisterModel(
@@ -38,7 +43,10 @@ namespace NintyNineKartStore.Web.Areas.Identity.Pages.Account
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            RoleManager<IdentityRole> roleManager
+            RoleManager<IdentityRole> roleManager,
+            IUnitOfWork unitOfWork,
+             IMapper maper
+
             )
         {
             this.userStore = userStore;
@@ -47,6 +55,9 @@ namespace NintyNineKartStore.Web.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             this.roleManager = roleManager;
+            this.unitOfWork = unitOfWork;
+            this.maper = maper;
+            emailStore = GetEmailStore();
         }
 
         [BindProperty]
@@ -88,8 +99,13 @@ namespace NintyNineKartStore.Web.Areas.Identity.Pages.Account
             public string? PhoneNumber { get; set; }
 
             public string? Role { get; set; }
+
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
+            [Display(Name="Company")]
+            public int CompanyId { get; set; }
+            [ValidateNever]
+            public IEnumerable<SelectListItem> CompanyList { get; set; }
 
         }
 
@@ -113,7 +129,9 @@ namespace NintyNineKartStore.Web.Areas.Identity.Pages.Account
                 {
                     Text = i,
                     Value = i
-                })
+                }),
+                CompanyList = new SelectList(maper.Map<IList<Company>, IList<CompanyDto>>( 
+                    await unitOfWork.Companies.GetAll()), "Id", "Name")
             };
 
         }
@@ -135,6 +153,11 @@ namespace NintyNineKartStore.Web.Areas.Identity.Pages.Account
                 user.State = Input.State;
                 user.PostalCode = Input.PostalCode;
                 user.PhoneNumber = Input.PhoneNumber;
+
+                if (Input.Role==SD.Role_User_Company)
+                {
+                    user.CompanyId=Input.CompanyId;
+                }
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
@@ -190,8 +213,20 @@ namespace NintyNineKartStore.Web.Areas.Identity.Pages.Account
             catch
             {
 
-                throw new InvalidOperationException($"Can`t create an instance of '{nameof(ApplicationUser)}'");
+                throw new InvalidOperationException($"Can`t create an instance of '{nameof(ApplicationUser)}'."+
+                    $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                   $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
+                 
             }
+        }
+
+        private IUserEmailStore<IdentityUser> GetEmailStore()
+        {
+            if (!_userManager.SupportsUserEmail)
+            {
+                throw new NotSupportedException("The default UI requires a user store with email support.");
+            }
+            return (IUserEmailStore<IdentityUser>)userStore;
         }
     }
 }

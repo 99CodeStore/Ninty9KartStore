@@ -12,5 +12,24 @@ namespace NintyNineKartStore.Utility
         public const string Role_User_Company = "Company";
         public const string Role_User_Admin = "Admin";
         public const string Role_User_Employee = "Employee";
+
+        public static class OrderStatus
+        {
+            public const string OrderPending = "Pending";
+            public const string OrderApproved = "Approved";
+            public const string OrderInProcess = "InProcess";
+            public const string OrderShipped = "Shipped";
+            public const string OrderCancelled = "Cancelled";
+            public const string OrderRefunded = "Refunded";
+            public const string OrderDelivered = "Delivered";
+        }
+
+        public static class PaymentStatus
+        {
+            public const string PaymentPending = "Pending";
+            public const string PaymentApproved = "Approved";
+            public const string PaymentDelayed = "ApprovedForDelayedPayment";
+            public const string Rejected = "Rejected";
+        }
     }
 }

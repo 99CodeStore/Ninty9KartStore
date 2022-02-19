@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace NintyNineKartStore.Core.Entities
+namespace NintyNineKartStore.Service.Models
 {
-    [Table("AspNetUsers")]
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUserDto
     {
         [Required()]
         [StringLength(30, MinimumLength = 3)]
@@ -24,7 +27,9 @@ namespace NintyNineKartStore.Core.Entities
 
         [ForeignKey("CompanyId")]
         [ValidateNever]
-        public Company Company { get; set; }
+        public CompanyDto Company { get; set; }
+
+        public string PhoneNumber { get; set; }
 
     }
 }

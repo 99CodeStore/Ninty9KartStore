@@ -13,5 +13,14 @@ namespace NintyNineKartStore.Core.Interfaces
         IProductRepository Products { get; }
 
         ICompanyRepository Companies { get; }
+
+        IApplicationUserRepository ApplicationUsers { get; }
+
+        IShoppingCartRepository ShoppingCarts { get; }
+
+        IOrderHeaderRepository OrderHeaders { get; }
+
+        IOrderDetailRepository OrderDetails { get; }
+
     }
 }

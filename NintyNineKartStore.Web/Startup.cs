@@ -41,8 +41,8 @@ namespace NintyNineKartStore.Web
                         Configuration.GetConnectionString("DefaultConnection"));
             });
 
-            services.AddIdentity<IdentityUser,IdentityRole>(
-                options => options.SignIn.RequireConfirmedAccount=true
+            services.AddIdentity<IdentityUser, IdentityRole>(
+                options => options.SignIn.RequireConfirmedAccount = true
                 ).AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationIdentityDbContext>();
 
@@ -53,6 +53,13 @@ namespace NintyNineKartStore.Web
             services.AddControllersWithViews();
 
             services.AddRazorPages().AddRazorRuntimeCompilation();
+            
+            services.ConfigureApplicationCookie(options =>
+             {
+                 options.LoginPath = $"/Identity/Account/Login";
+                 options.AccessDeniedPath = $"/Identity/Account/Logout";
+                 options.LogoutPath = $"/Identity/Account/AccessDenied";
+             });
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
