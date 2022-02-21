@@ -12,6 +12,7 @@ namespace NintyNineKartStore.Core.Entities
     [Table("OrderHeader")]
     public class OrderHeader
     {
+        [Key]
         public int Id { get; set; }
 
         public string ApplicationUserId { get; set; }

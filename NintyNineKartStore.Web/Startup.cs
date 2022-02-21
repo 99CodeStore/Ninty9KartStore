@@ -13,6 +13,7 @@ using NintyNineKartStore.Service.Configuration;
 using NintyNineKartStore.Service.Configurations;
 using NintyNineKartStore.Utility;
 using Serilog.Context;
+using Stripe;
 
 namespace NintyNineKartStore.Web
 {
@@ -40,6 +41,8 @@ namespace NintyNineKartStore.Web
                 options.UseSqlServer(
                         Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            services.Configure<StripeSetting>(Configuration.GetSection("Stripe")); // Configiring Stripe Settings
 
             services.AddIdentity<IdentityUser, IdentityRole>(
                 options => options.SignIn.RequireConfirmedAccount = true
@@ -86,6 +89,8 @@ namespace NintyNineKartStore.Web
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            StripeConfiguration.ApiKey = Configuration.GetSection("Stripe:SecretKey").Get<string>();
 
             app.UseAuthentication(); // Configuring user Authentication
 

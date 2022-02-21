@@ -7,6 +7,7 @@ using NintyNineKartStore.Core.Interfaces;
 using NintyNineKartStore.Service.Models;
 using NintyNineKartStore.Utility;
 using NintyNineKartStore.Web.Areas.Customer.ViewModels;
+using Stripe.Checkout;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -22,6 +23,7 @@ namespace NintyNineKartStore.Web.Areas.Customer.Controllers
         private readonly IMapper mapper;
         private readonly ILogger<ShoppingCartController> logger;
 
+        [BindProperty]
         public ShoppingCartViewModel shoppingCart { get; set; }
         public ShoppingCartController(IUnitOfWork unitOfWork,
             IMapper mapper,
@@ -103,36 +105,25 @@ namespace NintyNineKartStore.Web.Areas.Customer.Controllers
             var claimIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimIdentity.Claims.FirstOrDefault();
 
-            var cartItems = mapper.Map<IList<ShoppingCartDto>>(await unitOfWork.ShoppingCarts.GetAll(
+            shoppingCart.ShoppingCartItems = mapper.Map<IList<ShoppingCartDto>>(await unitOfWork.ShoppingCarts.GetAll(
                        u => u.ApplicationUserId == claim.Value,
                        null,
                        new List<string> { "Product" }
                        ));
 
-            var applicationUser = await unitOfWork.ApplicationUsers.Get(u => u.Id == claim.Value);
+            shoppingCart.OrderHeader.OrderTotal = shoppingCart.ShoppingCartItems.Sum(i => i.Count * i.Price);
 
-            shoppingCart = new ShoppingCartViewModel()
-            {
-                ShoppingCartItems = cartItems,
-                OrderHeader = new()
-                {
-                    OrderTotal = cartItems.Sum(i => i.Count * i.Price),
-                    Name = applicationUser.Name,
-                    PhoneNumber = applicationUser.PhoneNumber,
-                    StreetAddress = applicationUser.StreetAddress,
-                    City = applicationUser.City,
-                    State = applicationUser.State,
-                    PostalCode = applicationUser.PostalCode,
-                    PaymentStatus = SD.PaymentStatus.PaymentPending,
-                    OrderStatus = SD.OrderStatus.OrderPending,
-                    OrderDate = System.DateTime.Now,
-                    ApplicationUserId = claim.Value
-                }
-            };
+            shoppingCart.OrderHeader.PaymentStatus = SD.PaymentStatus.PaymentPending;
+            shoppingCart.OrderHeader.OrderStatus = SD.OrderStatus.OrderPending;
+            shoppingCart.OrderHeader.OrderDate = System.DateTime.Now;
+            shoppingCart.OrderHeader.ApplicationUserId = claim.Value;
 
-            await unitOfWork.OrderHeaders.Insert(mapper.Map<OrderHeader>(shoppingCart.OrderHeader));
+            var orderHeaderDb = mapper.Map<OrderHeader>(shoppingCart.OrderHeader);
 
+            await unitOfWork.OrderHeaders.Insert(orderHeaderDb);
             await unitOfWork.Save();
+
+            shoppingCart.OrderHeader.Id = orderHeaderDb.Id;
 
             foreach (var item in shoppingCart.ShoppingCartItems)
             {
@@ -145,20 +136,83 @@ namespace NintyNineKartStore.Web.Areas.Customer.Controllers
                 };
 
                 await unitOfWork.OrderDetails.Insert(orderDetail);
+
+                await unitOfWork.Save();
             }
 
+            #region Order Payment  
+            var domain = "https://localhost:44300/";
+            var options = new SessionCreateOptions
+            {
+                PaymentMethodTypes = new List<string> { "card" },
+
+                LineItems = new List<SessionLineItemOptions>(),
+                Mode = "payment",
+                SuccessUrl = domain + $"customer/ShoppingCart/OrderConfirmation?id={shoppingCart.OrderHeader.Id}",
+                CancelUrl = domain + $"customer/ShoppingCart/Index?id={shoppingCart.OrderHeader.Id}"
+            };
+
+            foreach (var item in shoppingCart.ShoppingCartItems)
+            {
+                var sessionLineItem = new SessionLineItemOptions
+                {
+                    PriceData = new SessionLineItemPriceDataOptions
+                    {
+                        UnitAmount = (long)item.Price * 100,//20.00=>2000
+                        Currency = "usd",
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        {
+                            Name = item.ProductDto.Title,
+                        },
+
+                    },
+                    Quantity = item.Count,
+                };
+
+                options.LineItems.Add(sessionLineItem);
+
+            }
+
+            var service = new SessionService();
+            Session session = service.Create(options);
+
+            unitOfWork.OrderHeaders.UpdatePaymentDetail(shoppingCart.OrderHeader.Id, session.Id, session.PaymentIntentId);
+
             await unitOfWork.Save();
 
-            unitOfWork.ShoppingCarts.DeleteRange(mapper.Map<IList<ShoppingCart>>(shoppingCart.ShoppingCartItems));
-            
-            await unitOfWork.Save();
+            Response.Headers.Add("Location", session.Url);
+            return new StatusCodeResult(303);
 
-            return RedirectToAction(nameof(OrderConfirmation));
+            #endregion
+
+            //unitOfWork.ShoppingCarts.DeleteRange(mapper.Map<IList<ShoppingCart>>(shoppingCart.ShoppingCartItems));
+
+            //await unitOfWork.Save();
+
+            //return RedirectToAction(nameof(OrderConfirmation));
         }
 
         public async Task<IActionResult> OrderConfirmation(int id)
         {
-            return View();
+            var orderHeader = await unitOfWork.OrderHeaders.Get(o => o.Id == id);
+
+            var service = new SessionService();
+
+            Session session = await service.GetAsync(orderHeader.SessionId);
+
+            if (session.PaymentStatus.ToLower() == "paid")
+            {
+                unitOfWork.OrderHeaders.UpdateStatus(orderHeader.Id, SD.OrderStatus.OrderApproved, SD.PaymentStatus.PaymentApproved);
+                await unitOfWork.Save();
+            }
+
+            var shoppingCarts = await unitOfWork.ShoppingCarts.GetAll(sc => sc.ApplicationUserId == orderHeader.ApplicationUserId);
+
+            unitOfWork.ShoppingCarts.DeleteRange(mapper.Map<IList<ShoppingCart>>(shoppingCarts));
+
+            await unitOfWork.Save();
+
+            return View(id);
         }
 
         public async Task<IActionResult> Plus(int cartId)

@@ -30,6 +30,12 @@ namespace NintyNineKartStore.Service.Configurations
 
             CreateMap<ShoppingCart, CreateShoppingCartDto>().ReverseMap();
             CreateMap<ShoppingCart, UpdateShoppingCartDto>().ReverseMap();
+
+            CreateMap<OrderHeader, CreateOrderHeaderDto> ().ReverseMap();
+            CreateMap<OrderHeader, OrderHeaderDto> ().ReverseMap();
+
+            //CreateMap<OrderDetail, CreateOrderDetailDto>().ReverseMap();
+            //CreateMap<OrderDetail, OrderDetailDto>().ReverseMap();
         }
     }
 }
