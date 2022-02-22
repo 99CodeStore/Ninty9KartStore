@@ -1,0 +1,88 @@
+﻿@model IEnumerable<OrderHeaderDto>;
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var status = Context.Request.Query["status"].ToString().Trim().ToLower();
+
+    var pending = "text-primary bg-transparent  border-primary";
+    var inprocess = "text-primary bg-transparent  border-primary";
+    var completed = "text-primary bg-transparent  border-primary";
+    var cancelled = "text-primary bg-transparent  border-primary";
+    var approved = "text-primary bg-transparent  border-primary";
+    var all = "text-primary bg-transparent  border-primary";
+
+    switch (status)
+    {
+        case "pending":
+            pending = "active text-white bg-primary";
+            break;
+        case "inprocess":
+            inprocess = "active text-white bg-primary";
+            break;
+        case "completed":
+            completed = "active text-white bg-primary";
+            break;
+        case "cancelled":
+            cancelled = "active text-white bg-primary";
+            break;
+        case "approved":
+            approved = "active text-white bg-primary";
+            break;
+        default:
+            all = "active text-white bg-primary";
+            break;
+    }
+}
+
+<div class="pt-1">
+    <div class="d-flex justify-content-between pt-4">
+        <div class="p-2">
+            <h2 class="text-primary">Order List</h2>
+        </div>
+        <div class="p-2">
+            <ul class="list-group list-group-horizontal ">
+               
+                <a style="text-decoration:none;" asp-action="Index" asp-area="Admin" asp-controller="Order" asp-route-status="pending">
+                <li class="list-group-item @pending"> Pending</li></a>
+                
+                
+                <a style="text-decoration:none;" asp-action="Index" asp-area="Admin" asp-controller="Order" asp-route-status="approved">
+                <li class="list-group-item @approved"> Approved</li></a>
+
+                <a style="text-decoration:none;" asp-action="Index" asp-area="Admin" asp-controller="Order" asp-route-status="inprocess">
+                <li class="list-group-item @inprocess"> In Process</li></a>
+
+
+                <a style="text-decoration:none;" asp-action="Index" asp-area="Admin" asp-controller="Order" asp-route-status="completed">
+                <li class="list-group-item @completed"> Completed</li></a>
+
+                <a style="text-decoration:none;" asp-action="Index" asp-area="Admin" asp-controller="Order" asp-route-status="all">
+                <li class="list-group-item  @all"> All</li></a>
+            </ul>
+        </div>
+    </div>
+
+    <table id="OrderListTable" class="table table-hover table-bordered table-striped w-100">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name  </th>
+                <th>Phone No.</th>
+                <th>Email</th>
+                <th>OrderTotal</th>
+                <th>OrderStatus</th>
+                <th>PaymentStatus</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+
+    </table>
+</div>
+
+@section Scripts{
+<script src="~/js/admin/order.js" async></script>
+}
+

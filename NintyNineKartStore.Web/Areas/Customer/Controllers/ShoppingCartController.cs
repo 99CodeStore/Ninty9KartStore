@@ -53,8 +53,6 @@ namespace NintyNineKartStore.Web.Areas.Customer.Controllers
                 OrderHeader = new() { OrderTotal = cartItemsDto.Sum(i => i.Count * i.Price) }
             };
 
-
-
             return View(shoppingCart);
         }
 
@@ -86,6 +84,7 @@ namespace NintyNineKartStore.Web.Areas.Customer.Controllers
                     OrderTotal = cartItemsDto.Sum(i => i.Count * i.Price),
                     Name = applicationUser.Name,
                     PhoneNumber = applicationUser.PhoneNumber,
+                    Email = applicationUser.Email,
                     StreetAddress = applicationUser.StreetAddress,
                     City = applicationUser.City,
                     State = applicationUser.State,
@@ -102,7 +101,7 @@ namespace NintyNineKartStore.Web.Areas.Customer.Controllers
         public async Task<IActionResult> PlaceOrder()
         {
 
-            if (ModelState.IsValid && shoppingCart.ShoppingCartItems!=null && shoppingCart.ShoppingCartItems.Count>0)
+            if (ModelState.IsValid)
             {
                 var claimIdentity = (ClaimsIdentity)User.Identity;
                 var claim = claimIdentity.Claims.FirstOrDefault();
@@ -112,14 +111,30 @@ namespace NintyNineKartStore.Web.Areas.Customer.Controllers
                            null,
                            new List<string> { "Product" }
                            ));
+                if (shoppingCart.ShoppingCartItems == null || shoppingCart.ShoppingCartItems.Count == 0)
+                {
+                    ModelState.AddModelError("", $"There is no Items on the cart. So Order can not be placed.");
+                    TempData["error"] = $"There is no Items on the cart. So Order can not be placed.";
+                    return RedirectToAction(nameof(Summary));
+                }
 
                 shoppingCart.OrderHeader.OrderTotal = shoppingCart.ShoppingCartItems.Sum(i => i.Count * i.Price);
 
-                shoppingCart.OrderHeader.PaymentStatus = SD.PaymentStatus.PaymentPending;
-                shoppingCart.OrderHeader.OrderStatus = SD.OrderStatus.OrderPending;
+
                 shoppingCart.OrderHeader.OrderDate = System.DateTime.Now;
                 shoppingCart.OrderHeader.ApplicationUserId = claim.Value;
 
+                var appUser = await unitOfWork.ApplicationUsers.Get(u => u.Id == claim.Value);
+                if (appUser.CompanyId.GetValueOrDefault() == 0)
+                {
+                    shoppingCart.OrderHeader.PaymentStatus = SD.PaymentStatus.PaymentDelayed;
+                    shoppingCart.OrderHeader.OrderStatus = SD.OrderStatus.OrderApproved;
+                }
+                else
+                {
+                    shoppingCart.OrderHeader.PaymentStatus = SD.PaymentStatus.PaymentPending;
+                    shoppingCart.OrderHeader.OrderStatus = SD.OrderStatus.OrderPending;
+                }
                 var orderHeaderDb = mapper.Map<OrderHeader>(shoppingCart.OrderHeader);
 
                 await unitOfWork.OrderHeaders.Insert(orderHeaderDb);
@@ -127,68 +142,77 @@ namespace NintyNineKartStore.Web.Areas.Customer.Controllers
 
                 shoppingCart.OrderHeader.Id = orderHeaderDb.Id;
 
-                foreach (var item in shoppingCart.ShoppingCartItems)
+                if (appUser.CompanyId.GetValueOrDefault() == 0)
                 {
-                    OrderDetail orderDetail = new()
+
+                    foreach (var item in shoppingCart.ShoppingCartItems)
                     {
-                        ProductId = item.ProductId,
-                        OrderId = shoppingCart.OrderHeader.Id,
-                        Price = item.Price,
-                        Count = item.Count,
+                        OrderDetail orderDetail = new()
+                        {
+                            ProductId = item.ProductId,
+                            OrderId = shoppingCart.OrderHeader.Id,
+                            Price = item.Price,
+                            Count = item.Count,
+                        };
+
+                        await unitOfWork.OrderDetails.Insert(orderDetail);
+
+                        await unitOfWork.Save();
+                    }
+
+                    #region Order Payment  
+                    var domain = "https://localhost:5001/";
+                    var options = new SessionCreateOptions
+                    {
+                        PaymentMethodTypes = new List<string> { "card" },
+
+                        LineItems = new List<SessionLineItemOptions>(),
+                        Mode = "payment",
+                        SuccessUrl = domain + $"customer/ShoppingCart/OrderConfirmation?id={shoppingCart.OrderHeader.Id}",
+                        CancelUrl = domain + $"customer/ShoppingCart/Index?id={shoppingCart.OrderHeader.Id}"
                     };
 
-                    await unitOfWork.OrderDetails.Insert(orderDetail);
+                    foreach (var item in shoppingCart.ShoppingCartItems)
+                    {
+                        var sessionLineItem = new SessionLineItemOptions
+                        {
+                            PriceData = new SessionLineItemPriceDataOptions
+                            {
+                                UnitAmount = (long)item.Price * 100,//20.00=>2000
+                                Currency = "usd",
+                                ProductData = new SessionLineItemPriceDataProductDataOptions
+                                {
+                                    Name = item.ProductDto.Title,
+                                },
+
+                            },
+                            Quantity = item.Count,
+                        };
+
+                        options.LineItems.Add(sessionLineItem);
+                    }
+
+                    var service = new SessionService();
+                    Session session = service.Create(options);
+
+                    unitOfWork.OrderHeaders.UpdatePaymentDetail(shoppingCart.OrderHeader.Id, session.Id, session.PaymentIntentId);
 
                     await unitOfWork.Save();
+
+                    Response.Headers.Add("Location", session.Url);
+                    return new StatusCodeResult(303);
+                    #endregion
+
                 }
-
-                #region Order Payment  
-                var domain = "https://localhost:5001/";
-                var options = new SessionCreateOptions
+                else
                 {
-                    PaymentMethodTypes = new List<string> { "card" },
-
-                    LineItems = new List<SessionLineItemOptions>(),
-                    Mode = "payment",
-                    SuccessUrl = domain + $"customer/ShoppingCart/OrderConfirmation?id={shoppingCart.OrderHeader.Id}",
-                    CancelUrl = domain + $"customer/ShoppingCart/Index?id={shoppingCart.OrderHeader.Id}"
-                };
-
-                foreach (var item in shoppingCart.ShoppingCartItems)
-                {
-                    var sessionLineItem = new SessionLineItemOptions
-                    {
-                        PriceData = new SessionLineItemPriceDataOptions
-                        {
-                            UnitAmount = (long)item.Price * 100,//20.00=>2000
-                            Currency = "usd",
-                            ProductData = new SessionLineItemPriceDataProductDataOptions
-                            {
-                                Name = item.ProductDto.Title,
-                            },
-
-                        },
-                        Quantity = item.Count,
-                    };
-
-                    options.LineItems.Add(sessionLineItem);
+                    return RedirectToAction(nameof(OrderConfirmation), new { id = shoppingCart.OrderHeader.Id });
                 }
-
-                var service = new SessionService();
-                Session session = service.Create(options);
-
-                unitOfWork.OrderHeaders.UpdatePaymentDetail(shoppingCart.OrderHeader.Id, session.Id, session.PaymentIntentId);
-
-                await unitOfWork.Save();
-
-                Response.Headers.Add("Location", session.Url);
-                return new StatusCodeResult(303); 
-                #endregion
             }
             else
             {
                 TempData["error"] = $"There is no Items on the cart. So Order can not be placed.";
-                return RedirectToAction(nameof(Summary)); 
+                return RedirectToAction(nameof(Summary));
             }
         }
 
@@ -196,14 +220,17 @@ namespace NintyNineKartStore.Web.Areas.Customer.Controllers
         {
             var orderHeader = await unitOfWork.OrderHeaders.Get(o => o.Id == id);
 
-            var service = new SessionService();
-
-            Session session = await service.GetAsync(orderHeader.SessionId);
-
-            if (session.PaymentStatus.ToLower() == "paid")
+            if (orderHeader.PaymentStatus!=SD.PaymentStatus.PaymentDelayed)
             {
-                unitOfWork.OrderHeaders.UpdateStatus(orderHeader.Id, SD.OrderStatus.OrderApproved, SD.PaymentStatus.PaymentApproved);
-                await unitOfWork.Save();
+                var service = new SessionService();
+
+                Session session = await service.GetAsync(orderHeader.SessionId);
+
+                if (session.PaymentStatus.ToLower() == "paid")
+                {
+                    unitOfWork.OrderHeaders.UpdateStatus(orderHeader.Id, SD.OrderStatus.OrderApproved, SD.PaymentStatus.PaymentApproved);
+                    await unitOfWork.Save();
+                } 
             }
 
             var shoppingCarts = await unitOfWork.ShoppingCarts.GetAll(sc => sc.ApplicationUserId == orderHeader.ApplicationUserId);
@@ -259,8 +286,6 @@ namespace NintyNineKartStore.Web.Areas.Customer.Controllers
 
             await unitOfWork.Save();
 
-            //var count = unitOfWork.ShoppingCarts.GetAll(u => u.ApplicationUserId == cart.ApplicationUserId).ToList().Count;
-            //HttpContext.Session.SetInt32(SD.SessionCart, count);
             return RedirectToAction(nameof(Index));
         }
 

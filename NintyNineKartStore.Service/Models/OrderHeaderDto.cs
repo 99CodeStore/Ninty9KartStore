@@ -28,6 +28,10 @@ namespace NintyNineKartStore.Service.Models
 
         [Required]
         public string PhoneNumber { get; set; }
+
+        [Required]
+        public string Email { get; set; }
+
         [Required]
         public string StreetAddress { get; set; }
         [Required]
@@ -43,5 +47,11 @@ namespace NintyNineKartStore.Service.Models
     public class OrderHeaderDto : CreateOrderHeaderDto
     {
         public int Id { get; set; }
+    }
+
+    public class OrderPageFilter : PagedRequestInput
+    {
+        public string? OrderStatus { get; set; }
+        public string? PaymentStatus { get; set; }
     }
 }
