@@ -25,7 +25,7 @@ namespace NintyNineKartStore.Data.Repository
         public async void UpdateStatus(int Id, string orderStatus, string paymentStaus = null)
         {
             var orderHeader = await _db.OrderHeaders.FindAsync(Id);
-            if (orderHeader == null)
+            if (orderHeader != null)
             {
                 orderHeader.OrderStatus = orderStatus;
                 if (paymentStaus != null)
@@ -38,7 +38,7 @@ namespace NintyNineKartStore.Data.Repository
         public async void UpdatePaymentDetail(int Id, string sessionId, string? paymentIntentId = null)
         {
             var orderHeader = await _db.OrderHeaders.FindAsync(Id);
-            if (orderHeader == null)
+            if (orderHeader != null)
             {
                 orderHeader.SessionId = sessionId;
                 orderHeader.PaymentIntentId = paymentIntentId;

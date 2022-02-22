@@ -141,7 +141,7 @@ namespace NintyNineKartStore.Web.Areas.Customer.Controllers
             }
 
             #region Order Payment  
-            var domain = "https://localhost:44300/";
+            var domain = "https://localhost:5001/";
             var options = new SessionCreateOptions
             {
                 PaymentMethodTypes = new List<string> { "card" },
@@ -170,7 +170,6 @@ namespace NintyNineKartStore.Web.Areas.Customer.Controllers
                 };
 
                 options.LineItems.Add(sessionLineItem);
-
             }
 
             var service = new SessionService();
@@ -185,11 +184,6 @@ namespace NintyNineKartStore.Web.Areas.Customer.Controllers
 
             #endregion
 
-            //unitOfWork.ShoppingCarts.DeleteRange(mapper.Map<IList<ShoppingCart>>(shoppingCart.ShoppingCartItems));
-
-            //await unitOfWork.Save();
-
-            //return RedirectToAction(nameof(OrderConfirmation));
         }
 
         public async Task<IActionResult> OrderConfirmation(int id)
