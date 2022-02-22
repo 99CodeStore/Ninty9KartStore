@@ -102,88 +102,94 @@ namespace NintyNineKartStore.Web.Areas.Customer.Controllers
         public async Task<IActionResult> PlaceOrder()
         {
 
-            var claimIdentity = (ClaimsIdentity)User.Identity;
-            var claim = claimIdentity.Claims.FirstOrDefault();
-
-            shoppingCart.ShoppingCartItems = mapper.Map<IList<ShoppingCartDto>>(await unitOfWork.ShoppingCarts.GetAll(
-                       u => u.ApplicationUserId == claim.Value,
-                       null,
-                       new List<string> { "Product" }
-                       ));
-
-            shoppingCart.OrderHeader.OrderTotal = shoppingCart.ShoppingCartItems.Sum(i => i.Count * i.Price);
-
-            shoppingCart.OrderHeader.PaymentStatus = SD.PaymentStatus.PaymentPending;
-            shoppingCart.OrderHeader.OrderStatus = SD.OrderStatus.OrderPending;
-            shoppingCart.OrderHeader.OrderDate = System.DateTime.Now;
-            shoppingCart.OrderHeader.ApplicationUserId = claim.Value;
-
-            var orderHeaderDb = mapper.Map<OrderHeader>(shoppingCart.OrderHeader);
-
-            await unitOfWork.OrderHeaders.Insert(orderHeaderDb);
-            await unitOfWork.Save();
-
-            shoppingCart.OrderHeader.Id = orderHeaderDb.Id;
-
-            foreach (var item in shoppingCart.ShoppingCartItems)
+            if (ModelState.IsValid && shoppingCart.ShoppingCartItems!=null && shoppingCart.ShoppingCartItems.Count>0)
             {
-                OrderDetail orderDetail = new()
+                var claimIdentity = (ClaimsIdentity)User.Identity;
+                var claim = claimIdentity.Claims.FirstOrDefault();
+
+                shoppingCart.ShoppingCartItems = mapper.Map<IList<ShoppingCartDto>>(await unitOfWork.ShoppingCarts.GetAll(
+                           u => u.ApplicationUserId == claim.Value,
+                           null,
+                           new List<string> { "Product" }
+                           ));
+
+                shoppingCart.OrderHeader.OrderTotal = shoppingCart.ShoppingCartItems.Sum(i => i.Count * i.Price);
+
+                shoppingCart.OrderHeader.PaymentStatus = SD.PaymentStatus.PaymentPending;
+                shoppingCart.OrderHeader.OrderStatus = SD.OrderStatus.OrderPending;
+                shoppingCart.OrderHeader.OrderDate = System.DateTime.Now;
+                shoppingCart.OrderHeader.ApplicationUserId = claim.Value;
+
+                var orderHeaderDb = mapper.Map<OrderHeader>(shoppingCart.OrderHeader);
+
+                await unitOfWork.OrderHeaders.Insert(orderHeaderDb);
+                await unitOfWork.Save();
+
+                shoppingCart.OrderHeader.Id = orderHeaderDb.Id;
+
+                foreach (var item in shoppingCart.ShoppingCartItems)
                 {
-                    ProductId = item.ProductId,
-                    OrderId = shoppingCart.OrderHeader.Id,
-                    Price = item.Price,
-                    Count = item.Count,
+                    OrderDetail orderDetail = new()
+                    {
+                        ProductId = item.ProductId,
+                        OrderId = shoppingCart.OrderHeader.Id,
+                        Price = item.Price,
+                        Count = item.Count,
+                    };
+
+                    await unitOfWork.OrderDetails.Insert(orderDetail);
+
+                    await unitOfWork.Save();
+                }
+
+                #region Order Payment  
+                var domain = "https://localhost:5001/";
+                var options = new SessionCreateOptions
+                {
+                    PaymentMethodTypes = new List<string> { "card" },
+
+                    LineItems = new List<SessionLineItemOptions>(),
+                    Mode = "payment",
+                    SuccessUrl = domain + $"customer/ShoppingCart/OrderConfirmation?id={shoppingCart.OrderHeader.Id}",
+                    CancelUrl = domain + $"customer/ShoppingCart/Index?id={shoppingCart.OrderHeader.Id}"
                 };
 
-                await unitOfWork.OrderDetails.Insert(orderDetail);
+                foreach (var item in shoppingCart.ShoppingCartItems)
+                {
+                    var sessionLineItem = new SessionLineItemOptions
+                    {
+                        PriceData = new SessionLineItemPriceDataOptions
+                        {
+                            UnitAmount = (long)item.Price * 100,//20.00=>2000
+                            Currency = "usd",
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
+                            {
+                                Name = item.ProductDto.Title,
+                            },
+
+                        },
+                        Quantity = item.Count,
+                    };
+
+                    options.LineItems.Add(sessionLineItem);
+                }
+
+                var service = new SessionService();
+                Session session = service.Create(options);
+
+                unitOfWork.OrderHeaders.UpdatePaymentDetail(shoppingCart.OrderHeader.Id, session.Id, session.PaymentIntentId);
 
                 await unitOfWork.Save();
+
+                Response.Headers.Add("Location", session.Url);
+                return new StatusCodeResult(303); 
+                #endregion
             }
-
-            #region Order Payment  
-            var domain = "https://localhost:5001/";
-            var options = new SessionCreateOptions
+            else
             {
-                PaymentMethodTypes = new List<string> { "card" },
-
-                LineItems = new List<SessionLineItemOptions>(),
-                Mode = "payment",
-                SuccessUrl = domain + $"customer/ShoppingCart/OrderConfirmation?id={shoppingCart.OrderHeader.Id}",
-                CancelUrl = domain + $"customer/ShoppingCart/Index?id={shoppingCart.OrderHeader.Id}"
-            };
-
-            foreach (var item in shoppingCart.ShoppingCartItems)
-            {
-                var sessionLineItem = new SessionLineItemOptions
-                {
-                    PriceData = new SessionLineItemPriceDataOptions
-                    {
-                        UnitAmount = (long)item.Price * 100,//20.00=>2000
-                        Currency = "usd",
-                        ProductData = new SessionLineItemPriceDataProductDataOptions
-                        {
-                            Name = item.ProductDto.Title,
-                        },
-
-                    },
-                    Quantity = item.Count,
-                };
-
-                options.LineItems.Add(sessionLineItem);
+                TempData["error"] = $"There is no Items on the cart. So Order can not be placed.";
+                return RedirectToAction(nameof(Summary)); 
             }
-
-            var service = new SessionService();
-            Session session = service.Create(options);
-
-            unitOfWork.OrderHeaders.UpdatePaymentDetail(shoppingCart.OrderHeader.Id, session.Id, session.PaymentIntentId);
-
-            await unitOfWork.Save();
-
-            Response.Headers.Add("Location", session.Url);
-            return new StatusCodeResult(303);
-
-            #endregion
-
         }
 
         public async Task<IActionResult> OrderConfirmation(int id)
@@ -276,7 +282,6 @@ namespace NintyNineKartStore.Web.Areas.Customer.Controllers
 
                 if (cartListDb.Count > 0)
                 {
-
                     unitOfWork.ShoppingCarts.IncreaseQuantity(cartListDb[0], cartDto.Count);
                     cartListDb[0].Price = GetPriceBasedOnQuantity(cartListDb[0].Count, productDto.Price, productDto.Price50, productDto.Price100);
                 }

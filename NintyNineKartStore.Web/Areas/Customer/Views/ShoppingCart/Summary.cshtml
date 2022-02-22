@@ -96,22 +96,32 @@
                                 </h4>
                             </div>
                             <hr />
-                            <ul class="list-group mb-3">
-                                @foreach (var details in Model.ShoppingCartItems)
-                                {
-                                    <li class="list-group-item d-flex justify-content-between bg-transparent text-body ">
-                                        <div>
-                                            <h6 class="my-0">@details.ProductDto.Title</h6>
-                                            <small class="text-muted">Quantity: @details.Count</small>
-                                        </div>
-                                        <span class="text-muted">@((details.Price * details.Count).ToString("c")) </span>
+                            @if (Model.ShoppingCartItems != null && Model.ShoppingCartItems.Count > 0)
+                            {
+                                <ul class="list-group mb-3">
+                                    @foreach (var details in Model.ShoppingCartItems)
+                                    {
+                                        <li class="list-group-item d-flex justify-content-between bg-transparent text-body ">
+                                            <div>
+                                                <h6 class="my-0">@details.ProductDto.Title</h6>
+                                                <small class="text-muted">Quantity: @details.Count</small>
+                                            </div>
+                                            <span class="text-muted">@((details.Price * details.Count).ToString("c")) </span>
+                                        </li>
+                                    }
+                                    <li class="list-group-item d-flex justify-content-between bg-light h5">
+                                        <h5 class="text-info">Total :</h5>
+                                        <strong class="text-info">@Model.OrderHeader.OrderTotal.ToString("c")</strong>
                                     </li>
-                                }
-                                <li class="list-group-item d-flex justify-content-between bg-light h5">
-                                    <h5 class="text-info">Total :</h5>
-                                    <strong class="text-info">@Model.OrderHeader.OrderTotal.ToString("c")</strong>
-                                </li>
-                            </ul>
+                                </ul>
+                            }
+                            else
+                            {
+                                <div class="alert alert-warning">
+                                    <i class="bi bi-info-circle-fill">&nbsp;</i> There is No Items on the cart.
+                                </div>
+                            }
+
                         </div>
                     </div>
                 </div>
