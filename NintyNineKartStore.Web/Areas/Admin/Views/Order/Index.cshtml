@@ -42,11 +42,11 @@
         </div>
         <div class="p-2">
             <ul class="list-group list-group-horizontal ">
-               
+
                 <a style="text-decoration:none;" asp-action="Index" asp-area="Admin" asp-controller="Order" asp-route-status="pending">
                 <li class="list-group-item @pending"> Pending</li></a>
-                
-                
+
+
                 <a style="text-decoration:none;" asp-action="Index" asp-area="Admin" asp-controller="Order" asp-route-status="approved">
                 <li class="list-group-item @approved"> Approved</li></a>
 
@@ -81,6 +81,27 @@
 
     </table>
 </div>
+
+<div class="modal fade" id="orderDetailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="staticBackdropLabel"> <i class="fas fa-shopping-cart"></i> &nbsp; Order Summary</h5>
+                <a href="#" class="text-white" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-x bi-x-lg"></i></a>
+
+            </div>
+            <div class="modal-body">
+                <div id='orderDetailModalContent'>
+                </div>
+            </div>
+            @*     <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Understood</button>
+                </div>*@
+        </div>
+    </div>
+</div>
+
 
 @section Scripts{
 <script src="~/js/admin/order.js" async></script>

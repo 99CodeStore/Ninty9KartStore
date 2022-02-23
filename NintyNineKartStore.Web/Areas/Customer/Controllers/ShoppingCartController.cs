@@ -125,7 +125,7 @@ namespace NintyNineKartStore.Web.Areas.Customer.Controllers
                 shoppingCart.OrderHeader.ApplicationUserId = claim.Value;
 
                 var appUser = await unitOfWork.ApplicationUsers.Get(u => u.Id == claim.Value);
-                if (appUser.CompanyId.GetValueOrDefault() == 0)
+                if (appUser.CompanyId.GetValueOrDefault() > 0)
                 {
                     shoppingCart.OrderHeader.PaymentStatus = SD.PaymentStatus.PaymentDelayed;
                     shoppingCart.OrderHeader.OrderStatus = SD.OrderStatus.OrderApproved;
@@ -141,24 +141,24 @@ namespace NintyNineKartStore.Web.Areas.Customer.Controllers
                 await unitOfWork.Save();
 
                 shoppingCart.OrderHeader.Id = orderHeaderDb.Id;
+               
+                foreach (var item in shoppingCart.ShoppingCartItems)
+                {
+                    OrderDetail orderDetail = new()
+                    {
+                        ProductId = item.ProductId,
+                        OrderId = shoppingCart.OrderHeader.Id,
+                        Price = item.Price,
+                        Count = item.Count,
+                    };
+
+                    await unitOfWork.OrderDetails.Insert(orderDetail);
+
+                    await unitOfWork.Save();
+                }
 
                 if (appUser.CompanyId.GetValueOrDefault() == 0)
                 {
-
-                    foreach (var item in shoppingCart.ShoppingCartItems)
-                    {
-                        OrderDetail orderDetail = new()
-                        {
-                            ProductId = item.ProductId,
-                            OrderId = shoppingCart.OrderHeader.Id,
-                            Price = item.Price,
-                            Count = item.Count,
-                        };
-
-                        await unitOfWork.OrderDetails.Insert(orderDetail);
-
-                        await unitOfWork.Save();
-                    }
 
                     #region Order Payment  
                     var domain = "https://localhost:5001/";
@@ -220,7 +220,7 @@ namespace NintyNineKartStore.Web.Areas.Customer.Controllers
         {
             var orderHeader = await unitOfWork.OrderHeaders.Get(o => o.Id == id);
 
-            if (orderHeader.PaymentStatus!=SD.PaymentStatus.PaymentDelayed)
+            if (orderHeader.PaymentStatus != SD.PaymentStatus.PaymentDelayed)
             {
                 var service = new SessionService();
 
@@ -230,7 +230,7 @@ namespace NintyNineKartStore.Web.Areas.Customer.Controllers
                 {
                     unitOfWork.OrderHeaders.UpdateStatus(orderHeader.Id, SD.OrderStatus.OrderApproved, SD.PaymentStatus.PaymentApproved);
                     await unitOfWork.Save();
-                } 
+                }
             }
 
             var shoppingCarts = await unitOfWork.ShoppingCarts.GetAll(sc => sc.ApplicationUserId == orderHeader.ApplicationUserId);

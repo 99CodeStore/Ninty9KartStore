@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NintyNineKartStore.Core.Entities;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 namespace NintyNineKartStore.Web.Controllers
 {
     [Area("Admin")]
+    [Authorize]
     public class CoverTypeController : Controller
     {
         private readonly IUnitOfWork unitOfWork;

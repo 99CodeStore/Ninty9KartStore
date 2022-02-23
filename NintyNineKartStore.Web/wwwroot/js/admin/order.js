@@ -22,6 +22,7 @@ $(document).ready(function () {
         orderStatus: status
     }
     loadDataTable(filter);
+
 });
 
 function loadDataTable(filter) {
@@ -40,11 +41,20 @@ function loadDataTable(filter) {
             {
                 "data": "id",
                 "render": function (data) {
-                    return `<div class="btn-group" role="group">
-                        <a class="btn btn-outline-primary" href="/Admin/Order/Detail?orderId=${data}"> <i class="bi bi-list-ul">&nbsp;</i> Details</a>
-                    </div>`;
+                    return `<div class="btn-group text-end" role="group">
+                           <a class="btn btn-outline-primary" href="/Admin/Order/Detail?orderId=${data}"> <i class="bi bi-list-ul">&nbsp;</i> Details</a>
+                       
+                    </div>`;/* <a class="btn btn-outline-primary" href="#" onclick="showOrderDetail('/Admin/Order/_Detail?orderId=${data}')" data-bs-toggle="modal" data-bs-target="#orderDetailModal"> <i class="bi bi-list-ul">&nbsp;</i> Details</a>*/
                 }
             }
         ]
     });
 }
+
+function showOrderDetail(action) {
+    loadPartialView(action, null, function (response) {
+        $('#orderDetailModalContent').html(response);
+    });
+}
+
+

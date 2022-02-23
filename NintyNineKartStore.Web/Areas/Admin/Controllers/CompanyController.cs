@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,8 @@ using System.Threading.Tasks;
 namespace NintyNineKartStore.Web.Controllers
 {
     [Area("Admin")]
+    [Authorize]
+
     public class CompanyController : Controller
     {
         private readonly IUnitOfWork unitOfWork;
