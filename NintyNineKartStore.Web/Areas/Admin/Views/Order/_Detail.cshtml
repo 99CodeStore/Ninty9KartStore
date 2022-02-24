@@ -265,7 +265,7 @@
                                    asp-action="ShipOrder" class="btn btn-primary form-control my-1" value="Ship Order" />
                                 }
 
-                                @if (Model.OrderHeader.OrderStatus != SD.OrderStatus.OrderRefunded &&
+                                @if (Model.OrderHeader.PaymentStatus != SD.PaymentStatus.Refunded &&
                                Model.OrderHeader.OrderStatus != SD.OrderStatus.OrderCancelled &&
                                Model.OrderHeader.OrderStatus  !=  SD.OrderStatus.OrderShipped)
                                 {

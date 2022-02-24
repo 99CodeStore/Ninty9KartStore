@@ -1,4 +1,6 @@
-﻿
+﻿@using NintyNineKartStore.Utility
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -18,49 +20,53 @@
                         <span class="visually-hidden">(current)</span>
                     </a>
                 </li>
+                @if (User.IsInRole(SD.Role_User_Admin))
+                {
+                    <li class="nav-item dropdown">
 
-                <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarAdminMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Content Management
+                        </a>
+                        <ul class="dropdown-menu " aria-labelledby="navbarAdminMenu">
+                            <li><a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index"> Category</a></li>
+                            <li><a class="dropdown-item" asp-area="Admin" asp-controller="CoverType" asp-action="Index"> CoverType</a></li>
+                            <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a></li>
+                            <li class="dropdown-divider"> </li>
+                            <li><a class="dropdown-item" asp-area="Admin" asp-controller="Company" asp-action="Index">Company</a></li>
+                            <li class="dropdown-divider"> </li>
+                            <li><a class="dropdown-item" asp-area="Admin" asp-controller="Account" asp-action="Index">Create User</a></li>
 
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarAdminMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Content Management
-                    </a>
-                    <ul class="dropdown-menu " aria-labelledby="navbarAdminMenu">
-                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index"> Category</a></li>
-                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="CoverType" asp-action="Index"> CoverType</a></li>
-                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a></li>
-                        <li class="dropdown-divider"> </li>
-                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Company" asp-action="Index">Company</a></li>
-                        <li class="dropdown-divider"> </li>
-                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Account" asp-action="Index">Create User</a></li>
-                         
-                    </ul>                   
-                </li>
-              
+                        </ul>
+                    </li>
+                }
+                @if(SignInManager.IsSignedIn(User))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Admin" asp-controller="Order" asp-action="Index">Manage Orders</a>
+                    </li>
+                }
                 <li class="nav-item">
-                    <a class="nav-link" asp-area="Admin" asp-controller="Order" asp-action="Index">Manage Orders</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
+                    <a class="nav-link"asp-area="Customer" asp-controller="Home" asp-action="About" >About</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                 </li>
                 @*<li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-            <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Separated link</a>
-            </div>
-        </li>*@
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                    <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Separated link</a>
+                    </div>
+                    </li>*@
             </ul>
-           
+
             <form class="d-flex">
                 <input class="form-control me-sm-2" type="text" placeholder="Search">
                 <button class="btn btn-secondary my-2 my-sm-0 text-nowrap" type="submit"><i class="bi bi-search">&nbsp;</i>Search </button>
-            </form> 
+            </form>
             <partial name="_LoginPartial" />
         </div>
     </div>

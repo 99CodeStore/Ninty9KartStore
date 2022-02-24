@@ -20,7 +20,6 @@ namespace NintyNineKartStore.Utility
             public const string OrderInProcess = "InProcess";
             public const string OrderShipped = "Shipped";
             public const string OrderCancelled = "Cancelled";
-            public const string OrderRefunded = "Refunded";
             public const string OrderDelivered = "Delivered";
         }
 
@@ -30,6 +29,7 @@ namespace NintyNineKartStore.Utility
             public const string PaymentApproved = "Approved";
             public const string PaymentDelayed = "ApprovedForDelayedPayment";
             public const string Rejected = "Rejected";
+            public const string Refunded = "Refunded";
         }
     }
 }

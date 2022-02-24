@@ -5,13 +5,14 @@ using Microsoft.Extensions.Logging;
 using NintyNineKartStore.Core.Entities;
 using NintyNineKartStore.Core.Interfaces;
 using NintyNineKartStore.Service.Models;
+using NintyNineKartStore.Utility;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace NintyNineKartStore.Web.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    [Authorize(Roles = SD.Role_User_Admin)]
     public class CoverTypeController : Controller
     {
         private readonly IUnitOfWork unitOfWork;

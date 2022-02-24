@@ -1,9 +1,5 @@
 ﻿using NintyNineKartStore.Core.Entities;
 using NintyNineKartStore.Core.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace NintyNineKartStore.Data.Repository
@@ -22,7 +18,7 @@ namespace NintyNineKartStore.Data.Repository
             _db.OrderHeaders.Update(orderHeader);
         }
 
-        public async void UpdateStatus(int Id, string orderStatus, string paymentStaus = null)
+        public async Task UpdateStatus(int Id, string orderStatus, string paymentStaus = null)
         {
             var orderHeader = await _db.OrderHeaders.FindAsync(Id);
             if (orderHeader != null)
@@ -35,7 +31,7 @@ namespace NintyNineKartStore.Data.Repository
             }
         }
 
-        public async void UpdatePaymentDetail(int Id, string sessionId, string? paymentIntentId = null)
+        public async Task UpdatePaymentDetail(int Id, string sessionId, string? paymentIntentId = null)
         {
             var orderHeader = await _db.OrderHeaders.FindAsync(Id);
             if (orderHeader != null)

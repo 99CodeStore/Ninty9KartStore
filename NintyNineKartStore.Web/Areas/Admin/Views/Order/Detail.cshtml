@@ -259,9 +259,10 @@
                                 </li>
                             </ul>
                             @if (Model.OrderHeader.PaymentStatus == SD.PaymentStatus.PaymentDelayed &&
-                            Model.OrderHeader.OrderStatus == SD.OrderStatus.OrderShipped)
+                            Model.OrderHeader.OrderStatus == SD.OrderStatus.OrderShipped 
+                            && (User.IsInRole(SD.Role_User_Admin) || User.IsInRole(SD.Role_User_Company)))
                             {
-                                <input type="submit" class="btn btn-success form-control my-1" value="Pay Now" />
+                                <input type="submit" asp-action="Pay_Now" asp-controller="Order" class="btn btn-success form-control my-1" value="Pay Now" />
                             }
                             @if (User.IsInRole(SD.Role_User_Admin) || User.IsInRole(SD.Role_User_Employee))
                             {
@@ -272,11 +273,11 @@
 
                                 if (Model.OrderHeader.OrderStatus == SD.OrderStatus.OrderInProcess)
                                 {
-                                    <input type="submit" onclick="return validateInput()"
+                                    <input type="submit" onclick="return validateInput();"
                                    asp-action="ShipOrder" class="btn btn-primary form-control my-1" value="Ship Order" />
                                 }
 
-                                @if (Model.OrderHeader.OrderStatus != SD.OrderStatus.OrderRefunded &&
+                                @if (Model.OrderHeader.PaymentStatus != SD.PaymentStatus.Refunded &&
                                Model.OrderHeader.OrderStatus != SD.OrderStatus.OrderCancelled &&
                                Model.OrderHeader.OrderStatus != SD.OrderStatus.OrderShipped)
                                 {

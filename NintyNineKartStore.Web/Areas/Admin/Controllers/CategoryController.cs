@@ -5,13 +5,14 @@ using Microsoft.Extensions.Logging;
 using NintyNineKartStore.Core.Entities;
 using NintyNineKartStore.Core.Interfaces;
 using NintyNineKartStore.Service.Models;
+using NintyNineKartStore.Utility;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace NintyNineKartStore.Web.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    [Authorize(Roles = SD.Role_User_Admin)]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork unitOfWork;
@@ -123,13 +124,13 @@ namespace NintyNineKartStore.Web.Controllers
                 return View(categoryDto);
             }
         }
-       
-        
-        [HttpPost,ActionName("Delete")]
+
+
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeletePost(int? id)
         {
-            if ( !ModelState.IsValid || id < 1)
+            if (!ModelState.IsValid || id < 1)
             {
                 return NotFound();
             }

@@ -161,7 +161,7 @@ namespace NintyNineKartStore.Web.Areas.Customer.Controllers
                 {
 
                     #region Order Payment  
-                    var domain = "https://localhost:5001/";
+                    var domain = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}/";
                     var options = new SessionCreateOptions
                     {
                         PaymentMethodTypes = new List<string> { "card" },
@@ -195,7 +195,7 @@ namespace NintyNineKartStore.Web.Areas.Customer.Controllers
                     var service = new SessionService();
                     Session session = service.Create(options);
 
-                    unitOfWork.OrderHeaders.UpdatePaymentDetail(shoppingCart.OrderHeader.Id, session.Id, session.PaymentIntentId);
+                    await unitOfWork.OrderHeaders.UpdatePaymentDetail(shoppingCart.OrderHeader.Id, session.Id, session.PaymentIntentId);
 
                     await unitOfWork.Save();
 
@@ -228,7 +228,7 @@ namespace NintyNineKartStore.Web.Areas.Customer.Controllers
 
                 if (session.PaymentStatus.ToLower() == "paid")
                 {
-                    unitOfWork.OrderHeaders.UpdateStatus(orderHeader.Id, SD.OrderStatus.OrderApproved, SD.PaymentStatus.PaymentApproved);
+                    await unitOfWork.OrderHeaders.UpdateStatus(orderHeader.Id, SD.OrderStatus.OrderApproved, SD.PaymentStatus.PaymentApproved);
                     await unitOfWork.Save();
                 }
             }

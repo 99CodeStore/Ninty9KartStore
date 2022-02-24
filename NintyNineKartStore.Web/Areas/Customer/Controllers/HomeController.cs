@@ -42,7 +42,10 @@ namespace NintyNineKartStore.Web.Controllers
         {
             return View();
         }
-
+        public IActionResult About()
+        {
+            return View();
+        }
         public async Task<ActionResult> Details(int? ProductId)
         {
             var cartObj = new ShoppingCartDto()
