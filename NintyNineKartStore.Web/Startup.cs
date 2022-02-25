@@ -23,13 +23,11 @@ namespace NintyNineKartStore.Web
         {
             Configuration = configuration;
         }
-
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddDbContext<Ninty9KartStoreDbContext>(options =>
             {
                 options.UseSqlServer(
@@ -49,6 +47,8 @@ namespace NintyNineKartStore.Web
                 ).AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationIdentityDbContext>();
 
+            services.Configure<MailClientConfigurationOption>(Configuration.GetSection("MailClientConfigurationOption"));
+
             services.AddSingleton<IEmailSender, EmailSender>();
 
             services.AddAutoMapper(typeof(MapperInitializer));
@@ -65,7 +65,6 @@ namespace NintyNineKartStore.Web
              });
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

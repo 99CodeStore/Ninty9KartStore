@@ -6,32 +6,39 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item">
-            <a id="manage" class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-        </li>
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown position-relative" href="#" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="align-middle bi bi-gear"></i>
-            </a>
-
-            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-
-
-                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">
-                    <i class="align-middle me-1 bi bi-person"></i> View Profile
+            <div class="btn-group">
+                <a id="manage" class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+                @*     </li>
+                    <li class="nav-item ">*@
+                <a class="nav-link position-relative" href="#" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="align-middle bi bi-gear"></i>
                 </a>
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
 
-                <a class="dropdown-item" href="#"><i class="align-middle me-1 fa fa-address-book-o"></i> Contacts</a>
-                <a class="dropdown-item" href="#"><i class="align-middle me-1 fas fa-fw fa-chart-pie"></i> Analytics</a>
-                <a class="dropdown-item" href="#"><i class="align-middle me-1 fas fa-fw fa-cogs"></i> Settings</a>
-                <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">
+                        <i class="align-middle me-1 bi bi-person"></i> View Profile
+                    </a>
 
-                <div class="dropdown-item">
-                    <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                        <button id="logout" type="submit" class="btn btn-link nav-link text-dark p-0">  <i class="bi bi-box-arrow-right">&nbsp;</i> Logout</button>
-                    </form>
+                    <a class="dropdown-item" href="#"><i class="align-middle me-1 fa fa-address-book-o"></i> Contacts</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#"><i class="align-middle me-1 fas fa-fw fa-chart-pie"></i> Analytics</a>
+
+                    <a class="dropdown-item" href="#"><i class="align-middle me-1 fas fa-fw fa-cogs"></i> Settings </a>
+                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Email"><i class="fas fa-at"></i> Email </a>
+                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/ChangePassword"><i class="fas fa-key"></i> Change Password </a>
+                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/PersonalData"><i class="bi bi-person-lines-fill"></i> Personal Data </a>
+                    <div class="dropdown-divider"></div>
+
+                    <div class="dropdown-item">
+                        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            <button id="logout" type="submit" class="btn btn-link nav-link text-dark p-0">  <i class="bi bi-box-arrow-right">&nbsp;</i> Logout</button>
+                        </form>
+                    </div>
+
                 </div>
             </div>
+
         </li>
         <li class="nav-item">
             <a id="ShoppingCart" class="nav-link" asp-controller="ShoppingCart" asp-area="Customer" asp-action="Index" title="Manage"><i class="bi bi-cart"></i></a>

@@ -102,7 +102,7 @@ namespace NintyNineKartStore.Web.Areas.Identity.Pages.Account
 
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
-            [Display(Name="Company")]
+            [Display(Name = "Company")]
             public int CompanyId { get; set; }
             [ValidateNever]
             public IEnumerable<SelectListItem> CompanyList { get; set; }
@@ -130,7 +130,7 @@ namespace NintyNineKartStore.Web.Areas.Identity.Pages.Account
                     Text = i,
                     Value = i
                 }),
-                CompanyList = new SelectList(maper.Map<IList<Company>, IList<CompanyDto>>( 
+                CompanyList = new SelectList(maper.Map<IList<Company>, IList<CompanyDto>>(
                     await unitOfWork.Companies.GetAll()), "Id", "Name")
             };
 
@@ -154,9 +154,9 @@ namespace NintyNineKartStore.Web.Areas.Identity.Pages.Account
                 user.PostalCode = Input.PostalCode;
                 user.PhoneNumber = Input.PhoneNumber;
 
-                if (Input.Role==SD.Role_User_Company)
+                if (Input.Role == SD.Role_User_Company)
                 {
-                    user.CompanyId=Input.CompanyId;
+                    user.CompanyId = Input.CompanyId;
                 }
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -200,6 +200,16 @@ namespace NintyNineKartStore.Web.Areas.Identity.Pages.Account
                 }
             }
 
+            Input.RoleList = roleManager.Roles.Select(x => x.Name)
+                .Select(i => new SelectListItem()
+                {
+                    Text = i,
+                    Value = i
+                });
+
+            Input.CompanyList = new SelectList(maper.Map<IList<Company>, IList<CompanyDto>>(
+                await unitOfWork.Companies.GetAll()), "Id", "Name");
+
             // If we got this far, something failed, redisplay form
             return Page();
         }
@@ -213,10 +223,10 @@ namespace NintyNineKartStore.Web.Areas.Identity.Pages.Account
             catch
             {
 
-                throw new InvalidOperationException($"Can`t create an instance of '{nameof(ApplicationUser)}'."+
+                throw new InvalidOperationException($"Can`t create an instance of '{nameof(ApplicationUser)}'." +
                     $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
-                 
+
             }
         }
 
