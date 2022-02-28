@@ -63,7 +63,13 @@ namespace NintyNineKartStore.Web
                  options.AccessDeniedPath = $"/Identity/Account/Logout";
                  options.LogoutPath = $"/Identity/Account/AccessDenied";
              });
-
+            services.AddMemoryCache();
+            services.AddDistributedMemoryCache();
+            services.AddSession(options => {
+                options.IdleTimeout = System.TimeSpan.FromMinutes(100);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
             services.AddTransient<IUnitOfWork, UnitOfWork>();
         }
 

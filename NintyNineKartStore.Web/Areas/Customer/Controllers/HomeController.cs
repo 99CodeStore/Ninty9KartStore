@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using NintyNineKartStore.Core.Entities;
 using NintyNineKartStore.Core.Interfaces;
@@ -22,12 +23,18 @@ namespace NintyNineKartStore.Web.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
+        private readonly IMemoryCache cache;
 
-        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork, IMapper mapper)
+        public HomeController(
+            ILogger<HomeController> logger,
+            IUnitOfWork unitOfWork,
+            IMapper mapper,
+            IMemoryCache cache)
         {
             this._logger = logger;
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            this.cache = cache;
         }
 
         public async Task<IActionResult> Index(PagedRequestInput pagedRequestInput)
@@ -48,13 +55,24 @@ namespace NintyNineKartStore.Web.Controllers
         }
         public async Task<ActionResult> Details(int? ProductId)
         {
-            var cartObj = new ShoppingCartDto()
+            ProductDto productDto = null;
+            if (!cache.TryGetValue("Product_" + ProductId.GetValueOrDefault(), out productDto))
             {
-                ProductDto = mapper.Map<ProductDto>(
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                          .SetSlidingExpiration(TimeSpan.FromSeconds(30));
+                // Fetching Product Details from Db
+                productDto = mapper.Map<ProductDto>(
                     await unitOfWork.Products.Get(
                         x => x.Id == ProductId.GetValueOrDefault()
                         , new List<string>() { "Category", "CoverType" }
-                        )),
+                        ));
+
+                cache.Set("Product_" + ProductId.GetValueOrDefault(), productDto, cacheEntryOptions);
+
+            }
+            var cartObj = new ShoppingCartDto()
+            {
+                ProductDto = productDto,
                 ProductId = ProductId.GetValueOrDefault(),
                 Count = 1
             };

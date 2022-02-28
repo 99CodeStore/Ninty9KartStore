@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NintyNineKartStore.Core.Entities;
@@ -22,17 +23,20 @@ namespace NintyNineKartStore.Web.Areas.Customer.Controllers
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
         private readonly ILogger<ShoppingCartController> logger;
+        private readonly IEmailSender emailSender;
 
         [BindProperty]
         public ShoppingCartViewModel shoppingCart { get; set; }
         public ShoppingCartController(IUnitOfWork unitOfWork,
             IMapper mapper,
-            ILogger<ShoppingCartController> logger
+            ILogger<ShoppingCartController> logger,
+            IEmailSender emailSender
             )
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
             this.logger = logger;
+            this.emailSender = emailSender;
         }
         public async Task<IActionResult> Index()
         {
@@ -141,7 +145,7 @@ namespace NintyNineKartStore.Web.Areas.Customer.Controllers
                 await unitOfWork.Save();
 
                 shoppingCart.OrderHeader.Id = orderHeaderDb.Id;
-               
+
                 foreach (var item in shoppingCart.ShoppingCartItems)
                 {
                     OrderDetail orderDetail = new()
@@ -218,7 +222,8 @@ namespace NintyNineKartStore.Web.Areas.Customer.Controllers
 
         public async Task<IActionResult> OrderConfirmation(int id)
         {
-            var orderHeader = await unitOfWork.OrderHeaders.Get(o => o.Id == id);
+            var orderHeader = await unitOfWork.OrderHeaders.Get(o => o.Id == id,
+                new() { "ApplicationUser" });
 
             if (orderHeader.PaymentStatus != SD.PaymentStatus.PaymentDelayed)
             {
@@ -232,6 +237,11 @@ namespace NintyNineKartStore.Web.Areas.Customer.Controllers
                     await unitOfWork.Save();
                 }
             }
+            // Sending Order Confirmation in Email
+            await emailSender.SendEmailAsync(
+                orderHeader.Email,
+                $"Order Confirmation",
+                $"Hi,{orderHeader.Name}<br /> Your Order has been successfully placed.");
 
             var shoppingCarts = await unitOfWork.ShoppingCarts.GetAll(sc => sc.ApplicationUserId == orderHeader.ApplicationUserId);
 
