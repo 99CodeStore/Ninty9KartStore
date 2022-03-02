@@ -1,18 +1,15 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using NintyNineKartStore.Core.Entities;
 using NintyNineKartStore.Core.Interfaces;
 using NintyNineKartStore.Service.Models;
-using NintyNineKartStore.Web.Areas.Customer.ViewModels;
 using NintyNineKartStore.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace NintyNineKartStore.Web.Controllers
@@ -35,6 +32,7 @@ namespace NintyNineKartStore.Web.Controllers
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
             this.cache = cache;
+           
         }
 
         public async Task<IActionResult> Index(PagedRequestInput pagedRequestInput)

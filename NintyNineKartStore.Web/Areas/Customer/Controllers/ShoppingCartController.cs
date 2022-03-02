@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -327,11 +328,15 @@ namespace NintyNineKartStore.Web.Areas.Customer.Controllers
 
                     var cart = mapper.Map<ShoppingCart>(cartDto);
 
-
                     await unitOfWork.ShoppingCarts.Insert(cart);
+
                 }
 
                 await unitOfWork.Save();
+
+                HttpContext.Session.SetInt32(SD.ShoppinghCart.ShoppingCartItemsCount,
+                        (await unitOfWork.ShoppingCarts.GetAll(u => u.ApplicationUserId == claim.Value)).Count
+                        );
 
             }
 

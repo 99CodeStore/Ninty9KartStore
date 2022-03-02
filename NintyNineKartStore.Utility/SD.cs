@@ -31,5 +31,9 @@ namespace NintyNineKartStore.Utility
             public const string Rejected = "Rejected";
             public const string Refunded = "Refunded";
         }
+        public class ShoppinghCart
+        {
+            public const string ShoppingCartItemsCount = "SessionShoppingCartCount";
+        }
     }
 }
