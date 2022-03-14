@@ -1,0 +1,91 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row pb-3">
+    <div class="container px-4 py-3" id="icon-grid">
+        <h2 class="pb-2 border-bottom"><i class="bi bi-stack">&nbsp;</i>Training Center Management</h2>
+
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 py-5">
+            <div class="col d-flex align-items-start">
+
+                @* <svg  width="1.75em" ><use xlink:href="#bootstrap"></use></svg>*@
+                <div>
+                    <a class="text-decoration-none" asp-area="TrainingPartner" asp-controller="TrainingCenter" asp-action="Register" >
+                        <h4 class="fw-bold mb-0"><i height="2.75em" width="2.75em" class=" bi bi-bank text-muted flex-shrink-0 me-3"></i>Center Registration</h4>
+                        <p class="text-justify text-muted">Paragraph of text beneath the heading to explain the heading.</p>
+                    </a>
+                </div>
+            </div>
+            <div class="col d-flex align-items-start">
+
+                <div>
+                    <a class="text-decoration-none" asp-area="TrainingPartner" asp-controller="TrainingCenter" asp-action="Index">
+                        <h4 class="fw-bold mb-0">
+                            <i height="2.75em" width="2.75em" class=" bi bi-card-checklist text-muted flex-shrink-0 me-3"></i>
+                            Manage Ceneters
+                        </h4>
+                        <p class="text-justify text-muted">Paragraph of text beneath the heading to explain the heading.</p>
+                    </a>
+                </div>
+            </div>
+            <div class="col d-flex align-items-start">
+
+                <div>
+                    <a class="text-decoration-none" asp-area="TrainingPartner" asp-controller="TrainingCenter" asp-action="Index">
+                        <h4 class="fw-bold mb-0">
+                            <i height="2.75em" width="2.75em" class=" bi bi-person-lines-fill text-muted flex-shrink-0 me-3"></i>
+                            Student List
+                        </h4>
+                        <p class="text-justify text-muted">Paragraph of text beneath the heading to explain the heading.</p>
+                    </a>
+                </div>
+            </div>
+            <div class="col d-flex align-items-start">
+
+                <div>
+                    <a class="text-decoration-none" asp-area="Identity" asp-page="/Account/Manage/Email">
+                        <h4 class="fw-bold mb-0"><i height="2.75em" width="2.75em" class=" bi bi-journal-richtext text-muted flex-shrink-0 me-3"></i> Featured title</h4>
+                        <p class="text-justify text-muted">Paragraph of text beneath the heading to explain the heading.</p>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="container px-4 py-3" id="icon-grid">
+        <h2 class="pb-2 border-bottom"><i class="bi bi-bookmarks-fill">&nbsp;</i> Training Partner Management</h2>
+
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 py-5">
+            <div class="col d-flex align-items-start">
+                <div>
+                    <a class="text-decoration-none" asp-area="TrainingPartner" asp-controller="Course" asp-action="Index">
+                        <h4 class="fw-bold mb-0"><i height="2.75em" width="2.75em" class=" bi bi-mortarboard text-muted flex-shrink-0 me-3"></i>Course Management</h4>
+                        <p class="text-justify text-secondary">Various Course Management operations Likes : Course Creation,Updation and Deletion.</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col d-flex align-items-start">
+                <div>
+                    <a class="text-decoration-none" asp-area="TrainingPartner" asp-action="Index" asp-controller="SponsoringBody">
+                        <h4 class="fw-bold mb-0"><i height="2.75em" width="2.75em" class=" bi bi-award text-muted flex-shrink-0 me-3"></i>Sponsering Body</h4>
+                        <p class="text-justify text-muted">Paragraph of text beneath the heading to explain the heading.</p>
+                    </a>
+                </div>
+            </div>
+            <div class="col d-flex align-items-start">
+
+                <div>
+                    <a class="text-decoration-none" asp-area="TrainingPartner">
+                        <h4 class="fw-bold mb-0">
+                            <i height="2.75em" width="2.75em" class=" bi bi-code-slash text-muted flex-shrink-0 me-3"></i> Reporting
+                        </h4>
+                        <p class="text-justify text-muted">Various Reports related to Traning Partner.</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

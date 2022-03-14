@@ -1,0 +1,80 @@
+﻿@model IEnumerable<TrainingCenterCourseDto> ;
+
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container pt-4">
+        <div class="row ">
+            <div class="col-7">
+                <h2 class="text-primary"><i class="bi bi-mortarboard-fill"> &nbsp;</i> Center`s Course Management</h2>
+            </div>
+           
+            <div class="col-5 text-end">
+                <a type="button" asp-action="Index" asp-controller="TrainingCenter" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-return-left">&nbsp;</i>Back To Centers
+                </a>
+                <a type="button" asp-action="Register" asp-controller="TrainingCenter" class="btn btn-primary"><i class="bi bi-plus-circle-dotted">&nbsp;</i> Add Course</a>
+            </div>
+        </div>
+
+        <table class="table table-hover table-bordered table-striped w-100">
+            <thead>
+                <tr>
+                    <th>  Course  </th>
+                    <th>Allotted Seats</th>
+
+                    <th>Registration Open</th>
+                    <th>Status</th>
+                    <th>AddedOn</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in Model)
+                {
+                    <tr>
+
+                        <td> @obj.Course.CourseName </td>
+
+                        <td>
+                            @obj.Seats
+                        </td>
+                        <td> @obj.IsRegistrationOpen  </td>
+                        <td> @obj.IsActive  </td>
+                        <td> @obj.CreatedOn  </td>
+                        <td class="textalign-content-center">
+                            <!-- Example split danger button -->
+                            <div class="btn-group dropdown" role="group">
+
+                                @* <a class="btn btn-outline-danger" asp-controller="TrainingCenter" asp-action="Delete" asp-route-id="@obj.Id"> <i class="bi bi-trash">&nbsp;</i> Delete</a>*@
+
+                                <a class="btn btn-outline-primary text-nowrap" asp-controller="TrainingCenter" asp-action="Edit" asp-route-id="@obj.Id"> <i class="bi bi-pencil-square">&nbsp;</i> Edit</a>
+                                <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" asp-controller="TrainingCenter" asp-action="Edit" asp-route-id="@obj.Id">
+                                        <i class="bi bi-mortarboard-fill">&nbsp;</i> Courses
+                                    </a>
+                                    <a class="dropdown-item" asp-area="TrainingPartner"
+                                       asp-controller="CenterAuthority" asp-action="Index" asp-route-id="@obj.Id">
+                                        <i class="bi bi-people-fill">&nbsp;</i> Center Authority
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" asp-controller="Student" asp-action="Index" asp-route-id="@obj.Id">
+                                        <i class="fa fa-users" aria-hidden="true"> &nbsp;</i>Student Lists
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+

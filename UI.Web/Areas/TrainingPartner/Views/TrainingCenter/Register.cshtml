@@ -1,0 +1,90 @@
+﻿@model CreateTrainingCenterDto
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post" asp-controller="TrainingCenter" asp-action="Register">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">Center Registration </h2>
+            <hr />
+        </div>
+        <div asp-validation-summary="All" class="text-danger"> </div>
+        <section>
+
+            <div class="mb-3">
+                <label asp-for="TrainingPartner"></label>
+                @if (ViewBag.TrainingPartnerList!=null)
+                {
+                    <select asp-for="TrainingPartnerId" class="form-select" asp-items="ViewBag.TrainingPartnerList">
+                        <option value=""> -- Select Traning Partner -- </option>
+                    </select>
+                }
+                else
+                {
+                    <input asp-for="TrainingPartner.PartnerName" class="form-control" readonly />
+                    <input  asp-for="TrainingPartnerId" type="hidden" />
+                }
+                <span asp-validation-for="CenterCode" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CenterCode"></label>
+                <input asp-for="CenterCode" class="form-control" />
+                <span asp-validation-for="CenterCode" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CenterName"></label>
+                <input asp-for="CenterName" class="form-control" />
+                <span asp-validation-for="CenterName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Detail"></label>
+                <textarea asp-for="Detail" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Detail" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="StreetAddress"></label>
+                <textarea asp-for="StreetAddress" class="form-control" rows="3"></textarea>
+
+                <span asp-validation-for="StreetAddress" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="City"></label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="State"></label>
+                <input asp-for="State" class="form-control" />
+                <span asp-validation-for="State" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="PostalCode"></label>
+                <input asp-for="PostalCode" class="form-control" />
+                <span asp-validation-for="PostalCode" class="text-danger"></span>
+            </div>
+             <div class="mb-3">
+                <label asp-for="PhoneNumber"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </section>
+        <div class="p-3">
+            <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle">&nbsp;</i> Register</button>
+            <a asp-controller="TrainingCenter" asp-action="Index" class="btn btn-secondary">Back To List</a>
+        </div>
+    </div>
+</form>

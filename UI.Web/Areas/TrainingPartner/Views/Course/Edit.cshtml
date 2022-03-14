@@ -1,0 +1,65 @@
+﻿@model CourseDto
+
+@{
+    ViewData["Title"] = "Edit Course";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post" asp-controller="Course" asp-action="Update">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary"> Edit Course </h2>
+            <hr />
+        </div>
+        <div asp-validation-summary="All" class="text-danger"> </div>
+        <div class="mb-3">
+            <label asp-for="CourseCode"></label>
+            <input asp-for="CourseCode" class="form-control" />
+            <span asp-validation-for="CourseCode" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="CourseName"></label>
+            <input asp-for="CourseName" class="form-control" />
+            <span asp-validation-for="CourseName" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description"></label>
+            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Duration"></label>
+            <div class="input-group w-100">
+                <input asp-for="Duration" class="form-control" \>
+                <select asp-for="DurationUnit" class="form-select">
+                    <option value="Days"> Days </option>
+                    <option value="Months"> Months </option>
+                    <option value="Years"> Years  </option>
+                </select>
+            </div>
+            <span asp-validation-for="Duration" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="SponsoringBody"></label>
+            <select asp-for="SponsoringBodyId" class="form-select" asp-items="@ViewBag.SponsoringBodyList">
+                <option value=""> -- Select Sponsoring Body -- </option>
+            </select>
+            <span asp-validation-for="SponsoringBodyId" class="text-danger"></span>
+        </div>
+
+        <input type="hidden" asp-for="Id" />
+        <div class="p-3">
+            <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle">&nbsp;</i> Update</button>
+            <a asp-controller="Course" asp-action="Index" class="btn btn-secondary">Back To List</a>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    @{
+    <partial name="_ValidationScriptsPartial" />
+    }
+}
+

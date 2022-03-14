@@ -1,0 +1,84 @@
+﻿@model IEnumerable<TrainingCenterDto>;
+
+@{
+    ViewData["Title"] = "Training Center Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container pt-4">
+    <div class="row ">
+        <div class="col-6">
+            <h2 class="text-primary">Centers Management</h2>
+        </div>
+
+        <div class="col-6 text-end">
+            <a type="button" asp-action="Register" asp-controller="TrainingCenter" class="btn btn-primary"><i class="bi bi-plus-circle-dotted"></i> New Center Registration</a>
+        </div>
+    </div>
+
+    <table class="table table-hover table-bordered table-striped w-100">
+        <thead>
+            <tr>
+                <th>   Code  </th>
+                <th>  Name  </th>
+                <th>Address</th>
+                <th>Email</th>
+                <th>Phone No.</th>
+                <th>Status</th>
+
+                <th>Created</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model)
+            {
+                <tr>
+                    <td>  @obj.CenterCode  </td>
+                    <td>  @obj.CenterName  </td>
+
+                    <td>
+                        @obj.StreetAddress @obj.City,@obj.State, @obj.StreetAddress - @obj.PostalCode
+                    </td>
+                    <td>  @obj.Email  </td>
+                    <td>  @obj.PhoneNumber  </td>
+
+                    <td>  @obj.Status  </td>
+
+                    <td>  @obj.CreatedOn  </td>
+                    <td class="textalign-content-center">
+                        <!-- Example split danger button -->
+                    <div class="btn-group dropdown" role="group">
+
+                            @* <a class="btn btn-outline-danger" asp-controller="TrainingCenter" asp-action="Delete" asp-route-id="@obj.Id"> <i class="bi bi-trash">&nbsp;</i> Delete</a>*@
+
+                            <a class="btn btn-outline-primary text-nowrap" asp-controller="TrainingCenter" asp-action="Edit" asp-route-id="@obj.Id"> <i class="bi bi-pencil-square">&nbsp;</i> Edit</a>
+                            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" asp-controller="TrainingCenterCourse" asp-action="Index" asp-route-id="@obj.Id">
+                                    <i class="bi bi-mortarboard-fill"
+                                   >&nbsp;</i> Courses
+                                </a>
+                                <a class="dropdown-item" asp-area="TrainingPartner"
+                                   asp-controller="CenterAuthority" asp-action="Index" asp-route-id="@obj.Id">
+                                    <i class="bi bi-people-fill" >&nbsp;</i> Center Authority
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" asp-controller="Student" asp-action="Index" asp-route-id="@obj.Id">
+                                    <i class="fa fa-users" aria-hidden="true"
+                                  > &nbsp;</i>Student Lists
+                                </a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+</div>
+

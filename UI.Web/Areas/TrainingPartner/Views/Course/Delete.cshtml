@@ -1,0 +1,57 @@
+﻿@model CourseDto
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post" asp-controller="Course" asp-action="Delete">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary"> Delete Course </h2>
+            <hr />
+        </div>
+        <div asp-validation-summary="All" class="text-danger"> </div>
+
+        <div class="mb-3">
+            <label asp-for="CourseCode"></label>
+            <input asp-for="CourseCode" class="form-control" readonly="readonly" />
+            <span asp-validation-for="CourseCode" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="CourseName"></label>
+            <input asp-for="CourseName" class="form-control" readonly="readonly" />
+            <span asp-validation-for="CourseName" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description"></label>
+            <textarea asp-for="Description" class="form-control" rows="3" readonly="readonly"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Duration"></label>
+            <div class="input-group w-100">
+                <input asp-for="Duration" class="form-control" readonly="readonly" \>
+                <select asp-for="DurationUnit" class="form-select" readonly="readonly">
+                    <option value="Days"> Days </option>
+                    <option value="Months"> Months </option>
+                    <option value="Years"> Years  </option>
+                </select>
+            </div>
+            <span asp-validation-for="Duration" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="SponsoringBody"></label>
+            <input asp-for="SponsoringBody.Name" class="form-control" readonly="readonly" />
+        </div>
+
+        <input type="hidden" asp-for="Id" />
+        <div class="p-3">
+            <button type="submit" class="btn btn-danger"><i class="bi bi-check-circle">&nbsp;</i> Proceed To Delete</button>
+            <a asp-controller="Course" asp-action="Index" class="btn btn-secondary">Back To List</a>
+        </div>
+    </div>
+</form>
+

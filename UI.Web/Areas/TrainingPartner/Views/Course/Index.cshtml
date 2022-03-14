@@ -1,0 +1,52 @@
+﻿@model IEnumerable<CourseDto>;
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container pt-4">
+    <div class="row ">
+        <div class="col-6">
+            <h2 class="text-primary">Course List</h2>
+        </div>
+
+        <div class="col-6 text-end">
+            <a type="button" asp-action="Create" asp-controller="Course" class="btn btn-primary"><i class="bi bi-plus-circle-dotted"></i> New Course </a>
+        </div>
+    </div>
+
+    <table class="table table-hover table-bordered table-striped w-100">
+        <thead>
+            <tr>
+                  <th>  Course Code  </th>
+                <th>  Course Name  </th>
+                <th>Duration</th>
+                <th>Sponsering Body</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model)
+            {
+                <tr>
+                    <td>  @obj.CourseCode  </td>
+                    <td>  @obj.CourseName  </td>
+                    <td>  @obj.Duration  @obj.DurationUnit  </td>
+                    <td>  @obj.SponsoringBody.Name   </td>
+                    <td class="text-end">
+                        <div class="btn-group" role="group">
+                            <a class="btn btn-outline-primary" asp-controller="Course" asp-action="Edit" asp-route-id="@obj.Id"> <i class="bi bi-pencil-square">&nbsp;</i> Edit</a>
+                            <a class="btn btn-outline-danger" asp-controller="Course" asp-action="Delete" asp-route-id="@obj.Id"> <i class="bi bi-trash">&nbsp;</i> Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+</div>
+
+
