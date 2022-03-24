@@ -1,0 +1,141 @@
+﻿@model NsdcTraingPartnerHub.Web.Areas.TrainingCenter.Models.StudentRegistrationVM;
+
+@{
+    ViewData["Title"] = "StudentRegistration";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post" asp-area="TrainingCenter" asp-controller="Student">
+    <div class="row">
+        <div class="col-12">
+            <div class="border p-3 mt-4 row">
+                <div class="row pb-2">
+                    <h2 class="text-primary"> Student Registration </h2>
+                    <hr />
+                </div>
+                <div asp-validation-summary="All" class="text-danger"> </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Student.SponsoringBody"></label>
+                    <select asp-for="Student.SponsoringBodyId" asp-items="@ViewBag.SponsoringBodyList" class="form-select">
+                        <option>--Select Sponsoring Body--</option>
+                    </select>
+                    <span asp-validation-for="Student.SponsoringBodyId" class="text-danger"></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Student.Course"></label>
+
+                    <select asp-for="Student.CourseId" class="form-select">
+                        <option value=""> -- Select Cousre -- </option>
+
+                    </select>
+                    <span asp-validation-for="Student.CourseId" class="text-danger"></span>
+                </div>
+                <div class="border-bottom"> <h6 class="h6 text-muted">Student`s Detail</h6></div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Student.FirstName"></label>
+                    <input asp-for="Student.FirstName" class="form-control" />
+                    <span asp-validation-for="Student.FirstName" class="text-danger"></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Student.LastName"></label>
+                    <input asp-for="Student.LastName" class="form-control" />
+                    <span asp-validation-for="Student.LastName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3 col-6">
+                    <label asp-for="Student.FatherName"></label>
+                    <input asp-for="Student.FatherName" class="form-control" />
+                    <span asp-validation-for="Student.FatherName" class="text-danger"></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Student.MotherName"></label>
+                    <input asp-for="Student.MotherName" class="form-control" />
+                    <span asp-validation-for="Student.MotherName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3 col-6">
+                    <label asp-for="Student.CasteCategory"></label>
+                    <input asp-for="Student.CasteCategory" class="form-control" />
+                    <span asp-validation-for="Student.CasteCategory" class="text-danger"></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Student.DOB"></label>
+                    <input asp-for="Student.DOB" type="date" class="form-control" />
+                    <span asp-validation-for="Student.DOB" class="text-danger"></span>
+                </div>
+
+                <div class="border-bottom"> <p class="text-muted">Address </p></div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Student.StreetAddress1"></label>
+                    <input asp-for="Student.StreetAddress1" class="form-control" />
+                    <span asp-validation-for="Student.StreetAddress1" class="text-danger"></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Student.StreetAddress2"></label>
+                    <input asp-for="Student.StreetAddress2" class="form-control" />
+                    <span asp-validation-for="Student.StreetAddress2" class="text-danger"></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Student.StreetAddress3"></label>
+                    <input asp-for="Student.StreetAddress3" class="form-control" />
+                    <span asp-validation-for="Student.StreetAddress3" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3 col-6">
+                    <label asp-for="Student.PostalCode"></label>
+                    <input asp-for="Student.PostalCode" class="form-control" />
+                    <span asp-validation-for="Student.PostalCode" class="text-danger"></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Student.City"></label>
+                    <input asp-for="Student.City" class="form-control" />
+                    <span asp-validation-for="Student.City" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3 col-6">
+                    <label asp-for="Student.State"></label>
+                    <input asp-for="Student.State" class="form-control" />
+                    <span asp-validation-for="Student.State" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3 col-6">
+                    <label asp-for="Student.PhoneNumber"></label>
+                    <input asp-for="Student.PhoneNumber" class="form-control" />
+                    <span asp-validation-for="Student.PhoneNumber" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3 col-6">
+                    <label asp-for="Student.Email"></label>
+                    <input asp-for="Student.Email" class="form-control" />
+                    <span asp-validation-for="Student.Email" class="text-danger"></span>
+                </div>
+
+                <div class="p-3">
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle">&nbsp;</i> Register</button>
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Back To Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+@section Scripts{
+    @{
+    <partial name="_ValidationScriptsPartial" />
+    }
+<script>
+           $(function () {
+        $("#Student_SponsoringBodyId").on("change", function () {
+            var value = $(this).val();
+            $.post("@Url.Content("~/Trainingpartner/TrainingCenterCourse/SponseringBodyByCourseList")", { id: value }, function (data) {
+
+                PopulateDropDown("#Student_CourseId", data);
+
+            });
+        });
+    });
+</script>
+
+}

@@ -1,0 +1,58 @@
+﻿@model IEnumerable<JobSectorDto>;
+
+@{
+    ViewData["Title"] = "Job Sector`s List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container pt-2">
+    <div class="row pb-1">
+        <div class="col-6">
+            <h4 class="text-primary">Job Sector List</h4>
+        </div>
+
+        <div class="col-6 text-end">
+            <a type="button" asp-area="TrainingCenter" asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary"><i class="bi bi-columns-gap">&nbsp;</i> Back to Dashboard</a>
+            <a type="button" asp-action="Create" asp-controller="JobSector" class="btn btn-primary"><i class="bi bi-plus-circle-dotted"></i> New Job Sector </a>
+        </div>
+    </div>
+
+    <table class="table table-hover table-bordered table-striped w-100">
+        <thead>
+            <tr>
+                <th class="text-nowrap">  S.No.  </th>
+                <th>  Sector Name  </th>
+                <th>Description</th>
+
+                <th>CreatedOn</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int i = 1;
+            }
+            @foreach (var obj in Model)
+            {
+                <tr>
+
+                    <td> @(i++) </td>
+                    <td>  @obj.SectorName  </td>
+                    <td>  @obj.Description   </td>
+                    <td>  @obj.CreatedOn </td>
+                    <td class="text-end">
+                        <div class="btn-group  btn-group-sm text-nowrap" role="group">
+                            <a class="btn btn-outline-primary" asp-controller="JobSector" asp-action="Create" asp-route-id="@obj.Id"> <i class="bi bi-pencil-square">&nbsp;</i> Edit</a>
+                            <a class="btn btn-outline-danger" OnClick=Delete("/TrainingPartner/JobSector/Delete/@obj.Id") > <i class="bi bi-trash">&nbsp;</i> Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>
+
+@section Scripts{
+    <script src="~/js/tp/job-sector.js" async></script>
+}

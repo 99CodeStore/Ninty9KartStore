@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container pt-4">
+<div class="container pt-2">
     <div class="row ">
         <div class="col-7">
             <h2 class="text-primary"><i class="bi bi-people">  &nbsp;</i> Center`s Authorities</h2>
@@ -15,7 +15,9 @@
             <a type="button" asp-action="Index" asp-controller="TrainingCenter" class="btn btn-outline-secondary">
                 <i class="bi bi-arrow-return-left">&nbsp;</i>Back To Centers
             </a>
-            <a type="button" asp-action="Create" asp-controller="CenterAuthority" class="btn btn-primary"><i class="bi bi-person-plus-fill">&nbsp;</i> Add Authorities</a>
+            <a type="button" asp-action="Create" asp-controller="CenterAuthority"
+               asp-route-centerId="@TempData["CenterId"]"
+               class="btn btn-primary"><i class="bi bi-person-plus-fill">&nbsp;</i> Add Authorities</a>
         </div>
     </div>
 
@@ -44,14 +46,12 @@
                     <td> @obj.Email  </td>
                     <td> @obj.PhoneNo  </td>
 
-                    <td class="textalign-content-center">
+                    <td class="textalign-content-center text-end">
                         <!-- Example split danger button -->
-                    <div class="btn-group dropdown" role="group">
-
-                           
+                    <div class="btn-group btn-group-sm dropdown text-nowrap " role="group">
 
                             <a class="btn btn-outline-primary text-nowrap" asp-controller="CenterAuthority" asp-action="Edit" asp-route-id="@obj.Id"> <i class="bi bi-pencil-square">&nbsp;</i> Edit</a>
-                             <a  class="btn btn-outline-danger disabled" asp-controller="CenterAuthority" asp-action="Delete" asp-route-id="@obj.Id"> <i class="bi bi-trash">&nbsp;</i> Delete</a>
+                            <a class="btn btn-outline-danger disabled" asp-controller="CenterAuthority" asp-action="Delete" asp-route-id="@obj.Id"> <i class="bi bi-trash">&nbsp;</i> Delete</a>
                         </div>
                     </td>
                 </tr>

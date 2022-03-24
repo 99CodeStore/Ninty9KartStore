@@ -62,5 +62,8 @@ namespace NsdcTraingPartnerHub.Utility
             public const string SuspendedCenter = "Suspended";
             public const string ClosedCenter = "Closed";          
         }
+
+        public const string TrainingCenterId = "SESSION_KEY_TRAINING_CENTER_ID";
+        public const string TrainingPartnerId = "SESSION_KEY_TRAINING_PARTNER_ID";
     }
 }

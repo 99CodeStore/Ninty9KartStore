@@ -15,15 +15,19 @@ namespace NsdcTraingPartnerHub.Core.Entities
         [Key]
         public int Id { get; set; }
         public int Seats { get; set; } = 0;
+        [Required]
         public int CourseId { get; set; }
         [ForeignKey("CourseId")]
         [ValidateNever]
-        public Course Course { get; set; }
+        public virtual Course Course { get; set; }
+       
         public int TrainingCenterId { get; set; }
+       
         [ForeignKey("TrainingCenterId")]
         [ValidateNever]
-        public TrainingCenter TrainingCenter { get; set; }
-        public bool IsActive { get; set; } = false;
+        public virtual TrainingCenter TrainingCenter { get; set; }
+      
+        public bool IsActive { get; set; } = true;
         public bool IsRegistrationOpen { get; set; } = false;
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
     }

@@ -136,6 +136,62 @@ namespace NsdcTraingPartnerHub.Data.Migrations.NsdcTpDb
                     b.ToTable("CenterAuthorityMember");
                 });
 
+            modelBuilder.Entity("NsdcTraingPartnerHub.Core.Entities.City", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("CityCode")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
+
+                    b.Property<string>("CityName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("CountryId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("StateId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("StateId");
+
+                    b.ToTable("City");
+                });
+
+            modelBuilder.Entity("NsdcTraingPartnerHub.Core.Entities.Country", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("CountryCode")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Country");
+                });
+
             modelBuilder.Entity("NsdcTraingPartnerHub.Core.Entities.Course", b =>
                 {
                     b.Property<int>("Id")
@@ -146,25 +202,30 @@ namespace NsdcTraingPartnerHub.Data.Migrations.NsdcTpDb
 
                     b.Property<string>("CourseCode")
                         .IsRequired()
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("CourseName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
                     b.Property<string>("DurationUnit")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("JobSectorId")
+                        .IsRequired()
+                        .HasColumnType("int");
 
                     b.Property<int>("SponsoringBodyId")
                         .HasColumnType("int");
@@ -173,6 +234,8 @@ namespace NsdcTraingPartnerHub.Data.Migrations.NsdcTpDb
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("JobSectorId");
 
                     b.HasIndex("SponsoringBodyId");
 
@@ -189,10 +252,14 @@ namespace NsdcTraingPartnerHub.Data.Migrations.NsdcTpDb
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("BatchName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
@@ -208,9 +275,39 @@ namespace NsdcTraingPartnerHub.Data.Migrations.NsdcTpDb
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicationUserId");
+
                     b.HasIndex("CourseId");
 
                     b.ToTable("TcCourseBatch");
+                });
+
+            modelBuilder.Entity("NsdcTraingPartnerHub.Core.Entities.JobSector", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("SectorName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("JobSector");
                 });
 
             modelBuilder.Entity("NsdcTraingPartnerHub.Core.Entities.SponsoringBody", b =>
@@ -242,6 +339,34 @@ namespace NsdcTraingPartnerHub.Data.Migrations.NsdcTpDb
                     b.ToTable("SponsoringBody");
                 });
 
+            modelBuilder.Entity("NsdcTraingPartnerHub.Core.Entities.State", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("CountryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("StateCode")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
+
+                    b.ToTable("State");
+                });
+
             modelBuilder.Entity("NsdcTraingPartnerHub.Core.Entities.Student", b =>
                 {
                     b.Property<Guid?>("Id")
@@ -261,6 +386,9 @@ namespace NsdcTraingPartnerHub.Data.Migrations.NsdcTpDb
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("DOB")
                         .HasColumnType("datetime2");
 
@@ -277,6 +405,9 @@ namespace NsdcTraingPartnerHub.Data.Migrations.NsdcTpDb
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<DateTime>("LastChangedOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("LastName")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
@@ -292,6 +423,10 @@ namespace NsdcTraingPartnerHub.Data.Migrations.NsdcTpDb
                     b.Property<string>("PostalCode")
                         .HasMaxLength(6)
                         .HasColumnType("nvarchar(6)");
+
+                    b.Property<string>("RegistrationNo")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<int>("SponsoringBodyId")
                         .HasColumnType("int");
@@ -366,8 +501,8 @@ namespace NsdcTraingPartnerHub.Data.Migrations.NsdcTpDb
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("PostalCode")
                         .HasMaxLength(6)
@@ -389,7 +524,8 @@ namespace NsdcTraingPartnerHub.Data.Migrations.NsdcTpDb
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TrainingPartnerId");
+                    b.HasIndex("TrainingPartnerId")
+                        .IsUnique();
 
                     b.ToTable("TrainingCenter");
                 });
@@ -500,8 +636,29 @@ namespace NsdcTraingPartnerHub.Data.Migrations.NsdcTpDb
                     b.Navigation("TrainingCenter");
                 });
 
+            modelBuilder.Entity("NsdcTraingPartnerHub.Core.Entities.City", b =>
+                {
+                    b.HasOne("NsdcTraingPartnerHub.Core.Entities.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId");
+
+                    b.HasOne("NsdcTraingPartnerHub.Core.Entities.State", "State")
+                        .WithMany()
+                        .HasForeignKey("StateId");
+
+                    b.Navigation("Country");
+
+                    b.Navigation("State");
+                });
+
             modelBuilder.Entity("NsdcTraingPartnerHub.Core.Entities.Course", b =>
                 {
+                    b.HasOne("NsdcTraingPartnerHub.Core.Entities.JobSector", "JobSector")
+                        .WithMany()
+                        .HasForeignKey("JobSectorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("NsdcTraingPartnerHub.Core.Entities.SponsoringBody", "SponsoringBody")
                         .WithMany()
                         .HasForeignKey("SponsoringBodyId")
@@ -512,6 +669,8 @@ namespace NsdcTraingPartnerHub.Data.Migrations.NsdcTpDb
                         .WithMany()
                         .HasForeignKey("TrainingPartnerId");
 
+                    b.Navigation("JobSector");
+
                     b.Navigation("SponsoringBody");
 
                     b.Navigation("TrainingPartner");
@@ -519,13 +678,28 @@ namespace NsdcTraingPartnerHub.Data.Migrations.NsdcTpDb
 
             modelBuilder.Entity("NsdcTraingPartnerHub.Core.Entities.CourseBatch", b =>
                 {
+                    b.HasOne("NsdcTraingPartnerHub.Core.Entities.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("NsdcTraingPartnerHub.Core.Entities.Course", "Course")
                         .WithMany()
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("ApplicationUser");
+
                     b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("NsdcTraingPartnerHub.Core.Entities.State", b =>
+                {
+                    b.HasOne("NsdcTraingPartnerHub.Core.Entities.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId");
+
+                    b.Navigation("Country");
                 });
 
             modelBuilder.Entity("NsdcTraingPartnerHub.Core.Entities.Student", b =>
@@ -565,9 +739,9 @@ namespace NsdcTraingPartnerHub.Data.Migrations.NsdcTpDb
             modelBuilder.Entity("NsdcTraingPartnerHub.Core.Entities.TrainingCenter", b =>
                 {
                     b.HasOne("NsdcTraingPartnerHub.Core.Entities.TrainingPartner", "TrainingPartner")
-                        .WithMany()
-                        .HasForeignKey("TrainingPartnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithOne()
+                        .HasForeignKey("NsdcTraingPartnerHub.Core.Entities.TrainingCenter", "TrainingPartnerId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("TrainingPartner");

@@ -1,0 +1,89 @@
+﻿@model NsdcTraingPartnerHub.Service.Models.CourseBatchDto;
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post" asp-controller="Batch">
+    <div class="row">
+        <div class="col-12">
+            <div class="border p-3 mt-2 row">
+                <input type="hidden" asp-for="Id" />
+                <div class="row pb-2">
+
+                    @if (Model != null && Model.Id > 0)
+                    {
+                        <h2 class="text-primary"> Update Batch </h2>
+                    }
+                    else
+                    {
+                        <h2 class="text-primary"> Create Batch </h2>
+                    }
+                    <hr />
+                </div>
+                <div asp-validation-summary="All" class="text-danger"> </div>
+
+                <div class="mb-3">
+                    <label asp-for="CourseId"></label>
+                    @if (Model.CourseId > 0 && Model.Id == 0)
+                    {
+                        <label asp-for="CourseId"></label>
+                        <input asp-for="Course.CourseName" class="form-control" />
+                        <input type="hidden" asp-for="CourseId" class="form-control" />
+                    }
+                    else
+                    {
+                        <select asp-for="CourseId" class="form-select" asp-items="ViewBag.CourseList"></select>
+                        <span asp-validation-for="CourseId" class="text-danger"></span>
+                    }
+
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="BatchName"></label>
+                    <input asp-for="BatchName" class="form-control" />
+                    <span asp-validation-for="BatchName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3 col-6">
+
+                    <label asp-for="StartFrom"></label>
+                    <input asp-for="StartFrom" class="form-control" />
+                    <span asp-validation-for="StartFrom" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3 col-6">
+                    <label asp-for="EndTo"></label>
+                    <input asp-for="EndTo" class="form-control" />
+                    <span asp-validation-for="EndTo" class="text-danger"></span>
+                </div>
+
+                <div class="p-3">
+
+                    <button type="submit" class="btn btn-primary">
+
+                        @if (Model != null && Model.Id > 0)
+                        {
+                            <i class="bi bi-check-circle">&nbsp;</i>
+
+                            <span>Update</span>
+                        }
+                        else
+                        {
+                            <i class="bi bi-check-circle">&nbsp;</i> <span>Create</span>
+                        }
+
+                    </button>
+                    <a asp-controller="Batch" asp-action="Index" class="btn btn-secondary">Back To List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    @{
+    <partial name="_ValidationScriptsPartial" />
+    }
+}

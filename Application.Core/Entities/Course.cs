@@ -11,13 +11,14 @@ namespace NsdcTraingPartnerHub.Core.Entities
         [Key]
         public int Id { get; set; }
 
-        [StringLength(5, MinimumLength = 3, ErrorMessage = "The Course Code should be between 3 to 5 characters")]
+        [StringLength(10, MinimumLength = 3, ErrorMessage = "The Course Code should be between 3 to 10 characters")]
         [Required()]
         public string CourseCode { get; set; }
 
         [Required()]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "The Course Name should be between 3 to 50 characters")]
+        [StringLength(100, MinimumLength = 3, ErrorMessage = "The Course Name should be between 3 to 100 characters")]
         public string CourseName { get; set; }
+        [StringLength(500, MinimumLength = 3, ErrorMessage = "The Course Description should be between 3 to 500 characters")]
         public string Description { get; set; }
         public int Duration { get; set; }
         public string DurationUnit { get; set; }
@@ -33,6 +34,12 @@ namespace NsdcTraingPartnerHub.Core.Entities
         [ValidateNever]
         public virtual TrainingPartner TrainingPartner { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
+
+        [ForeignKey("JobSectorId")]
+        [ValidateNever]
+        public JobSector JobSector { get; set; }
+        [Required]
+        public int? JobSectorId { get; set; }
 
     }
 }

@@ -43,10 +43,20 @@
 
         <div class="mb-3">
             <label asp-for="SponsoringBody"></label>
-            <select asp-for="SponsoringBodyId" class="form-select" asp-items="@ViewBag.SponsoringBodyList">
+            <select asp-for="SponsoringBodyId" class="form-select"
+            
+            asp-items="@ViewBag.SponsoringBodyList">
                 <option value=""> -- Select Sponsoring Body -- </option>
             </select>
             <span asp-validation-for="SponsoringBodyId" class="text-danger"></span>
+        </div>
+
+         <div class="mb-3">
+            <label asp-for="JobSector"></label>
+            <select asp-for="JobSectorId" class="form-select" asp-items="@ViewBag.JobSectorList">
+                <option value=""> -- Select Job Sector -- </option>
+            </select>
+            <span asp-validation-for="JobSectorId" class="text-danger"></span>
         </div>
         <div class="p-3">
 

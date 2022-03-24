@@ -1,0 +1,60 @@
+﻿@model NsdcTraingPartnerHub.Service.Models.JobSectorDto;
+@{
+    ViewData["Title"] = "Manage Job Sector";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post" asp-controller="JobSector">
+    <div class="border p-3 mt-4">
+        <input type="hidden" asp-for="Id" />
+        <div class="row pb-2">
+
+            @if (Model != null && Model.Id.GetValueOrDefault() > 0)
+            {
+                <h2 class="text-primary"> Update Job Sector </h2>
+            }
+            else
+            {
+                <h2 class="text-primary"> Create Job Sector </h2>
+            }
+            <hr />
+        </div>
+        <div asp-validation-summary="All" class="text-danger"> </div>
+
+        <div class="mb-3">
+            <label asp-for="SectorName"></label>
+            <input asp-for="SectorName" class="form-control" />
+            <span asp-validation-for="SectorName" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description"></label>
+            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="p-3">
+
+
+            <button type="submit" class="btn btn-primary">
+
+                @if (Model != null && Model.Id.GetValueOrDefault() > 0)
+                {
+                    <i class="bi bi-check-circle">&nbsp;</i><span>Update</span>
+                }
+                else
+                {
+                    <i class="bi bi-check-circle">&nbsp;</i> <span>Create</span>
+                }
+
+            </button>
+            <a asp-controller="JobSector" asp-action="Index" class="btn btn-secondary">Back To List</a>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    @{
+    <partial name="_ValidationScriptsPartial" />
+    }
+}
+

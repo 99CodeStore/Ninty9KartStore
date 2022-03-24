@@ -28,18 +28,21 @@ namespace NsdcTraingPartnerHub.Service.Configurations
             //dest.Product,
             //opt => opt.MapFrom(src => src.ProductDto)).ReverseMap();
 
-            //CreateMap<ShoppingCart, CreateShoppingCartDto>().ReverseMap();
-            //CreateMap<ShoppingCart, UpdateShoppingCartDto>().ReverseMap();
+            CreateMap<Student, CreateStudentDto>().ReverseMap();
+            CreateMap<Student, StudentDto>().ReverseMap();
 
-            //CreateMap<OrderHeader, CreateOrderHeaderDto> ().ReverseMap();
-            //CreateMap<OrderHeader, OrderHeaderDto> ().ReverseMap();
-
-            //CreateMap<OrderDetail, OrderDetailDto> ().ReverseMap();
+            CreateMap<JobSector, JobSectorDto>().ReverseMap();
+            CreateMap<JobSector, CreateJobSectorDto>().ReverseMap();
+            
+            CreateMap<CourseBatch, CourseBatchDto>().ReverseMap();
+            CreateMap<CourseBatch, CreateCourseBatchDto>().ReverseMap();
 
             CreateMap<ApplicationUser, ApplicationUserDto> ().ReverseMap();
 
             CreateMap<TrainingCenter, CreateTrainingCenterDto>().ReverseMap();
             CreateMap<TrainingCenter, TrainingCenterDto>().ReverseMap();
+            CreateMap<TrainingCenterCourse, CreateTrainingCenterCourseDto>().ReverseMap();
+            CreateMap<TrainingCenterCourse,  TrainingCenterCourseDto>().ReverseMap();
         }
     }
 }

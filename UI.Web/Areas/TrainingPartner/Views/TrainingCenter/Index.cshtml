@@ -5,13 +5,16 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container pt-4">
+<div class="container pt-2">
     <div class="row ">
         <div class="col-6">
             <h2 class="text-primary">Centers Management</h2>
         </div>
 
         <div class="col-6 text-end">
+            
+            <a type="button" asp-area="TrainingCenter" asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary"><i class="bi bi-columns-gap">&nbsp;</i> Back to Dashboard</a>
+       
             <a type="button" asp-action="Register" asp-controller="TrainingCenter" class="btn btn-primary"><i class="bi bi-plus-circle-dotted"></i> New Center Registration</a>
         </div>
     </div>
@@ -48,7 +51,7 @@
                     <td>  @obj.CreatedOn  </td>
                     <td class="textalign-content-center">
                         <!-- Example split danger button -->
-                    <div class="btn-group dropdown" role="group">
+                    <div class="btn-group btn-group-sm dropdown" role="group">
 
                             @* <a class="btn btn-outline-danger" asp-controller="TrainingCenter" asp-action="Delete" asp-route-id="@obj.Id"> <i class="bi bi-trash">&nbsp;</i> Delete</a>*@
 

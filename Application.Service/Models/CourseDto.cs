@@ -9,16 +9,16 @@ namespace NsdcTraingPartnerHub.Service.Models
     public class CreateCourseDto
     {
         [Required(ErrorMessage = "Course Name is required!!")]
-        [StringLength(20, MinimumLength = 3, ErrorMessage = "The Course Name should be between 3 to 50 characters")]
+        [StringLength(100, MinimumLength = 3, ErrorMessage = "The Course Name should be between 3 to 100 characters")]
         [DisplayName("Course Name")]
         public string CourseName { get; set; }
 
-        [StringLength(5, MinimumLength = 3, ErrorMessage = "The Course Code should be between 3 to 5 characters")]
+        [StringLength(10, MinimumLength = 3, ErrorMessage = "The Course Code should be between 3 to 10 characters")]
         [Required()]
         [DisplayName("Course Code")]
         public string CourseCode { get; set; }
 
-        [StringLength(20, MinimumLength = 3, ErrorMessage = "The Course Description should be between 20 to 500 characters")]
+        [StringLength(500, MinimumLength = 3, ErrorMessage = "The Course Description should be between 20 to 500 characters")]
         public string Description { get; set; }
         [Range(1, 500, ErrorMessage = "Duration must be between 1 to 500 only!!")]
         public int Duration { get; set; }
@@ -39,6 +39,12 @@ namespace NsdcTraingPartnerHub.Service.Models
         [ValidateNever]
         public virtual TrainingPartnerDto TrainingPartner { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
+
+        [ForeignKey("JobSectorId")]
+        [ValidateNever]
+        public JobSectorDto JobSector { get; set; }
+        [Required]
+        public int? JobSectorId { get; set; }
 
     }
 

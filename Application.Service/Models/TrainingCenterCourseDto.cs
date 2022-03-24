@@ -1,28 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System;
-using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NsdcTraingPartnerHub.Service.Models
 {
     public class CreateTrainingCenterCourseDto
     {
         public int Seats { get; set; } = 0;
+       [Required]
         public int CourseId { get; set; }
        
         [ForeignKey("CourseId")]
         [ValidateNever]
-        public CourseDto Course { get; set; }
+        public virtual CourseDto Course { get; set; }
         public int TrainingCenterId { get; set; }
        
         [ForeignKey("TrainingCenterId")]
         [ValidateNever]
-        public TrainingCenterDto TrainingCenter { get; set; }
+        public virtual TrainingCenterDto TrainingCenter { get; set; }
      
+        [DisplayName("Open for Student Registration")]
         public bool IsRegistrationOpen { get; set; } = false;
     }
     public class TrainingCenterCourseDto: CreateTrainingCenterCourseDto
@@ -30,6 +29,6 @@ namespace NsdcTraingPartnerHub.Service.Models
         [Required]
         public int Id { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow; 
-        public bool IsActive { get; set; } = false;
+        public bool IsActive { get; set; } = true;
     }
 }

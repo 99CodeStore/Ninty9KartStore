@@ -9,15 +9,19 @@
     <Compile Remove="Areas\Admin\**" />
     <Compile Remove="Areas\Customer\**" />
     <Compile Remove="Areas\NewFolder\**" />
+    <Compile Remove="wwwroot\js\NewFolder\**" />
     <Content Remove="Areas\Admin\**" />
     <Content Remove="Areas\Customer\**" />
     <Content Remove="Areas\NewFolder\**" />
+    <Content Remove="wwwroot\js\NewFolder\**" />
     <EmbeddedResource Remove="Areas\Admin\**" />
     <EmbeddedResource Remove="Areas\Customer\**" />
     <EmbeddedResource Remove="Areas\NewFolder\**" />
+    <EmbeddedResource Remove="wwwroot\js\NewFolder\**" />
     <None Remove="Areas\Admin\**" />
     <None Remove="Areas\Customer\**" />
     <None Remove="Areas\NewFolder\**" />
+    <None Remove="wwwroot\js\NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -47,10 +51,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\TrainingCenter\Controllers\" />
-    <Folder Include="Areas\TrainingCenter\Data\" />
-    <Folder Include="Areas\TrainingCenter\Models\" />
-    <Folder Include="Areas\TrainingPartner\Data\" />
     <Folder Include="Controllers\" />
     <Folder Include="logs\" />
     <Folder Include="wwwroot\images\products\" />

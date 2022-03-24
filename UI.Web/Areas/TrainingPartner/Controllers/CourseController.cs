@@ -14,30 +14,35 @@ namespace NsdcTraingPartnerHub.Web.Areas.TrainingPartner.Controllers
     public class CourseController : Controller
     {
         private readonly IUnitOfWork unitOfWork;
-        private readonly IMapper maper;
+        private readonly IMapper mapper;
         private readonly ILogger<CourseController> logger;
 
         public CourseController(IUnitOfWork unitOfWork,
-            IMapper maper,
+            IMapper mapper,
             ILogger<CourseController> logger)
         {
             this.unitOfWork = unitOfWork;
-            this.maper = maper;
+            this.mapper = mapper;
             this.logger = logger;
         }
         public async Task<IActionResult> Index()
         {
-            var courses = await unitOfWork.Courses.GetAll(null, null, new List<string>() { "TrainingPartner", "SponsoringBody" });
-            IEnumerable<CourseDto> result = maper.Map<IList<CourseDto>>(courses);
+            var courses = await unitOfWork.Courses.GetAll(null, null, new List<string>() { "TrainingPartner", "SponsoringBody" ,"JobSector"});
+            IEnumerable<CourseDto> result = mapper.Map<IList<CourseDto>>(courses);
             return View(result);
         }
 
         public async Task<IActionResult> Create()
         {
             ViewBag.SponsoringBodyList = new SelectList(
-                maper.Map<IList<SponsoringBody>, IList<SponsoringBodyDto>>(
+                mapper.Map<IList<SponsoringBody>, IList<SponsoringBodyDto>>(
                     await unitOfWork.SponsoringBodies.GetAll()
                     ), "Id", "Name");
+
+            ViewBag.JobSectorList = new SelectList(
+                   await unitOfWork.JobSectors.GetAll()
+                     , "Id", "SectorName");
+
             return View();
         }
 
@@ -48,7 +53,7 @@ namespace NsdcTraingPartnerHub.Web.Areas.TrainingPartner.Controllers
 
             if (ModelState.IsValid)
             {
-                var newCourse = maper.Map<Course>(createCourseDto);
+                var newCourse = mapper.Map<Course>(createCourseDto);
 
                 await unitOfWork.Courses.Insert(newCourse);
                 await unitOfWork.Save();
@@ -70,7 +75,7 @@ namespace NsdcTraingPartnerHub.Web.Areas.TrainingPartner.Controllers
                 return NotFound();
             }
 
-            var course = await unitOfWork.Courses.Get(x => x.Id == id );
+            var course = await unitOfWork.Courses.Get(x => x.Id == id);
 
             if (course == null)
             {
@@ -78,17 +83,21 @@ namespace NsdcTraingPartnerHub.Web.Areas.TrainingPartner.Controllers
             }
 
             ViewBag.SponsoringBodyList = new SelectList(
-            maper.Map<IList<SponsoringBody>, IList<SponsoringBodyDto>>(
+            mapper.Map<IList<SponsoringBody>, IList<SponsoringBodyDto>>(
                 await unitOfWork.SponsoringBodies.GetAll()
                 ), "Id", "Name");
 
-            var courseDto = maper.Map<CourseDto>(course);
+            ViewBag.JobSectorList = new SelectList(
+                  await unitOfWork.JobSectors.GetAll()
+                    , "Id", "SectorName");
+
+            var courseDto = mapper.Map<CourseDto>(course);
             return View(courseDto);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(int? id, [FromForm] UpdateCourseDto categoryDto)
+        public async Task<IActionResult> Update(int? id, [FromForm] UpdateCourseDto courseDto)
         {
 
             if (!ModelState.IsValid || id < 1)
@@ -96,9 +105,9 @@ namespace NsdcTraingPartnerHub.Web.Areas.TrainingPartner.Controllers
                 return NotFound();
             }
 
-            var category = await unitOfWork.Courses.Get(x => x.Id == id.Value);
+            var course = await unitOfWork.Courses.Get(x => x.Id == id.Value);
 
-            if (category == null)
+            if (course == null)
             {
                 NotFound();
             }
@@ -106,19 +115,19 @@ namespace NsdcTraingPartnerHub.Web.Areas.TrainingPartner.Controllers
             if (ModelState.IsValid)
             {
 
-                maper.Map(categoryDto, category);
+                mapper.Map(courseDto, course);
 
-                unitOfWork.Courses.Update(category);
+                unitOfWork.Courses.Update(course);
 
                 await unitOfWork.Save();
 
-                TempData["success"] = $"{categoryDto.CourseName} Updated successfully.";
+                TempData["success"] = $"{courseDto.CourseName} Updated successfully.";
 
                 return RedirectToAction("Index");
             }
             else
             {
-                return View(categoryDto);
+                return View(courseDto);
             }
         }
 
@@ -155,9 +164,16 @@ namespace NsdcTraingPartnerHub.Web.Areas.TrainingPartner.Controllers
                 NotFound();
             }
 
-            var courseDto = maper.Map<CourseDto>(course);
+            var courseDto = mapper.Map<CourseDto>(course);
             return View(courseDto);
         }
 
+        [HttpPost]
+        public async Task<JsonResult> SponseringBodyByCourseList(int? id)
+        {
+            var result = new SelectList(
+                await unitOfWork.Courses.GetAll(c => c.SponsoringBodyId == id.GetValueOrDefault()), "Id", "CourseName");
+            return Json(result);
+        }
     }
 }

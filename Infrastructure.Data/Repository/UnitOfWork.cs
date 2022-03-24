@@ -28,6 +28,8 @@ namespace NsdcTraingPartnerHub.Data.Repository
             Courses = new CourseRepository(context);
             CourseBatches = new CourseBatchRepository(context);
 
+            JobSectors = new JobSectorRepository(context);
+
         }
 
         public ICourseRepository Courses { get; private set; }
@@ -45,6 +47,7 @@ namespace NsdcTraingPartnerHub.Data.Repository
         public ICenterAuthorityMemberRepository CenterAuthorityMembers { get; private set; }
         public IStudentRepository Students { get; set; }
 
+        public IJobSectorRepository JobSectors { get; private set; }
         public void Dispose()
         {
             dbContext.Dispose();

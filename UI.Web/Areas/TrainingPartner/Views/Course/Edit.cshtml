@@ -49,6 +49,13 @@
             <span asp-validation-for="SponsoringBodyId" class="text-danger"></span>
         </div>
 
+        <div class="mb-3">
+            <label asp-for="JobSector"></label>
+            <select asp-for="JobSectorId" class="form-select" asp-items="@ViewBag.JobSectorList">
+                <option value=""> -- Select Job Sector -- </option>
+            </select>
+            <span asp-validation-for="JobSectorId" class="text-danger"></span>
+        </div>
         <input type="hidden" asp-for="Id" />
         <div class="p-3">
             <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle">&nbsp;</i> Update</button>

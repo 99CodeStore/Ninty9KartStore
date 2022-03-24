@@ -3,13 +3,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using NsdcTraingPartnerHub.Core.Entities;
 using NsdcTraingPartnerHub.Core.Interfaces;
 using NsdcTraingPartnerHub.Service.Models;
+using NsdcTraingPartnerHub.Utility;
+using NsdcTraingPartnerHub.Web.Areas.TrainingCenter.Models;
 using NsdcTraingPartnerHub.Web.Models;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace NsdcTraingPartnerHub.Web.Controllers
@@ -21,6 +22,9 @@ namespace NsdcTraingPartnerHub.Web.Controllers
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
         private readonly IMemoryCache cache;
+
+        [BindProperty]
+        public UserDashboardViewModel UserDashboardVM { get; set; }
 
         public HomeController(
             ILogger<HomeController> logger,
@@ -40,7 +44,26 @@ namespace NsdcTraingPartnerHub.Web.Controllers
             //var products = await unitOfWork.Products.GetPagedList(mapper.Map<PagedRequest>(pagedRequestInput), null, null, new List<string> { "Category" });
             //  IList<ProductDto> result = mapper.Map<IList<ProductDto>>(products);
             //result
-            return View();
+
+            var claimIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimIdentity.Claims.FirstOrDefault();
+
+            if (claim != null)
+            {
+                var user = await unitOfWork.ApplicationUsers.Get(u => u.Id == claim.Value);
+                if (user != null)
+                {
+                    UserDashboardVM = new() { Name = user.Name, UserCategory = user.UserCategory };
+
+                    if (user.UserCategory == SD.UserCategory.TrainingCenterUser)
+                    {
+                        UserDashboardVM.TrainingCenter = mapper.Map<TrainingCenterDto>(await unitOfWork.TrainingCenters.Get(tc => tc.Id == user.TrainingCenterId));
+                        HttpContext.Session.SetInt32(SD.TrainingCenterId, user.TrainingCenterId.GetValueOrDefault());
+                    }
+                }
+            }
+
+            return View(UserDashboardVM);
         }
 
         public IActionResult Privacy()

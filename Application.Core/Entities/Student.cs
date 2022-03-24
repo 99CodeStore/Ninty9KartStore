@@ -10,6 +10,10 @@ namespace NsdcTraingPartnerHub.Core.Entities
     {
         [Key]
         public Guid? Id { get; set; }
+
+        [StringLength(20, MinimumLength = 3)]
+        public string? RegistrationNo { get; set; }
+
         [Required()]
         [StringLength(50, MinimumLength = 3)]
         public string FirstName { get; set; }
@@ -69,6 +73,9 @@ namespace NsdcTraingPartnerHub.Core.Entities
         [ForeignKey("CourseId")]
         [ValidateNever]
         public virtual Course Course { get; set; }
+
+        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
+        public DateTime LastChangedOn { get; set; } = DateTime.UtcNow;
 
     }
 }

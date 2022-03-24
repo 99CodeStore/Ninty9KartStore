@@ -9,6 +9,7 @@ namespace NsdcTraingPartnerHub.Data
         {
 
         }
+
         public DbSet<SponsoringBody> SponsoringBodyRepositories { get; set; }
 
         public DbSet<TrainingCenter> TrainingCenters { get; set; }
@@ -20,6 +21,11 @@ namespace NsdcTraingPartnerHub.Data
         public DbSet<CenterAuthorityMember> CenterAuthorityMembers { get; set; }
 
         public DbSet<Student> Students { get; set; }
+        public DbSet<JobSector> JobSectors { get; set; }
+       
+        public DbSet<City> Cities { get; set; }
+        public DbSet<State> States { get; set; }
+        public DbSet<Country> Countries { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -29,12 +35,12 @@ namespace NsdcTraingPartnerHub.Data
             builder.Entity<Student>().HasOne(p => p.ApplicationUser).WithOne().OnDelete(DeleteBehavior.NoAction);
             builder.Entity<Student>().HasOne(p => p.Course).WithOne().OnDelete(DeleteBehavior.NoAction);
             builder.Entity<Student>().HasOne(p => p.TrainingCenter).WithOne().OnDelete(DeleteBehavior.NoAction);
-            
+
             builder.Entity<TrainingCenterCourse>().HasOne(p => p.Course).WithOne().OnDelete(DeleteBehavior.NoAction);
             builder.Entity<TrainingCenterCourse>().HasOne(p => p.TrainingCenter).WithOne().OnDelete(DeleteBehavior.NoAction);
 
             builder.Entity<TrainingCenter>().HasOne(p => p.TrainingPartner).WithOne().OnDelete(DeleteBehavior.NoAction);
-            
+
         }
     }
 }

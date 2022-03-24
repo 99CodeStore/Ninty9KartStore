@@ -1,0 +1,79 @@
+﻿@model IEnumerable<StudentDto>;
+
+@{
+    ViewData["Title"] = "StudentList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="pt-1">
+    <div class="d-flex justify-content-between">
+        <div class="p-2">
+            <h2 class="text-primary">Student List</h2>
+        </div>
+        <div class="p-2">
+            <ul class="list-group list-group-horizontal ">
+
+                @* <a style="text-decoration:none;" asp-action="Index" asp-area="Admin" asp-controller="Order" asp-route-status="pending">
+                    <li class="list-group-item @pending"> Pending</li></a>
+
+
+                    <a style="text-decoration:none;" asp-action="Index" asp-area="Admin" asp-controller="Order" asp-route-status="approved">
+                    <li class="list-group-item @approved"> Approved</li></a>
+
+                    <a style="text-decoration:none;" asp-action="Index" asp-area="Admin" asp-controller="Order" asp-route-status="inprocess">
+                    <li class="list-group-item @inprocess"> In Process</li></a>
+
+
+                    <a style="text-decoration:none;" asp-action="Index" asp-area="Admin" asp-controller="Order" asp-route-status="completed">
+                    <li class="list-group-item @completed"> Completed</li></a>
+
+                    <a style="text-decoration:none;" asp-action="Index" asp-area="Admin" asp-controller="Order" asp-route-status="all">
+                    <li class="list-group-item  @all"> All</li></a>*@
+            </ul>
+        </div>
+    </div>
+
+    <table id="studentListTable" class="table table-hover table-bordered table-striped w-100">
+        <thead>
+            <tr>
+                <th>S.No</th>
+                <th>Reg.No</th>
+                <th>Student`s Name  </th>
+                <th>DOB  </th>
+                <th>Phone No.</th>
+                <th>Email</th>
+                <th>Course</th>
+                <th>Add Date</th>
+                <th>Added by</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+
+    </table>
+</div>
+
+<div class="modal fade" id="studentDetailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-xl">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="staticBackdropLabel"> <i class="fas fa-shopping-cart"></i> &nbsp; Order Summary</h5>
+                <a href="#" class="text-white" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-x bi-x-lg"></i></a>
+
+            </div>
+            <div class="modal-body">
+                <div id='studentDetailModalContent'>
+                </div>
+            </div>
+            @*     <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Understood</button>
+                </div>*@
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+<script src="~/js/tc/student-list.js" async></script>
+}

@@ -22,4 +22,11 @@ namespace NsdcTraingPartnerHub.Web.Areas.TrainingPartner.Models
         public bool IsCreateLogin { get; set; }
 
     }
+
+    public class UpdateCenterAuthorityVM : CenterAuthorityVM
+    { 
+        [Required]
+        public int Id { get; set; }
+
+    }
 }

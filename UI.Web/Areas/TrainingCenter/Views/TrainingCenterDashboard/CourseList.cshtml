@@ -1,0 +1,56 @@
+﻿@model IEnumerable<TrainingCenterCourseDto>;
+@using NsdcTraingPartnerHub.Utility;
+
+@{
+    ViewData["Title"] = "CourseList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container pt-2">
+    <div class="row ">
+        <div class="col-6">
+            <h2 class="text-primary">Course List </h2>
+        </div>
+        <div class="col-6 text-end">
+            <a type="button" asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary"><i class="bi bi-columns-gap">&nbsp;</i> Back to Dashboard</a>
+        </div>
+    </div>
+
+    <table class="table table-hover table-bordered table-striped w-100">
+        <thead>
+            <tr>
+                <th>SN.</th>
+                <th>  Course Code  </th>
+                <th>  Course Name  </th>
+                <th>Duration</th>
+                <th>Total Seats</th>
+                <th>Registration Status</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int i = 1;
+            }
+            @foreach (var obj in Model)
+            {
+                <tr>
+                    <td> @(i++)</td>
+                    <td>  @obj.Course.CourseCode  </td>
+                    <td>  @obj.Course.CourseName  </td>
+                    <td>  @obj.Course.Duration  @obj.Course.DurationUnit  </td>
+                    <td>  @obj.Seats  </td>
+                    <td>  @(obj.IsRegistrationOpen ? "Open":"Closed")  </td>
+                    <td class="text-end">
+                        @*  <div class="btn-group  btn-group-sm" role="group">
+                            <a class="btn btn-outline-primary" asp-controller="Course" asp-action="Edit" asp-route-id="@obj.Id"> <i class="bi bi-pencil-square">&nbsp;</i> Edit</a>
+                            <a class="btn btn-outline-danger" asp-controller="Course" asp-action="Delete" asp-route-id="@obj.Id"> <i class="bi bi-trash">&nbsp;</i> Delete</a>
+                            </div>*@
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+</div>

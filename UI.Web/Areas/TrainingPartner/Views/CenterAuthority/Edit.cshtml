@@ -1,11 +1,12 @@
-﻿@model NsdcTraingPartnerHub.Web.Areas.TrainingPartner.Models.CenterAuthorityVM;
+﻿@model NsdcTraingPartnerHub.Web.Areas.TrainingPartner.Models.UpdateCenterAuthorityVM;
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
-<form method="post" asp-controller="CenterAuthority">
+<form method="post" asp-controller="CenterAuthority" asp-action="Update">
+    <input type="hidden" asp-for="Id" />
     <div class="row">
         <div class="col-12">
             <div class="border p-3 mt-4 row">
@@ -39,7 +40,7 @@
 
                 <div class="mb-3">
                     <div class="form-check">
-                        <input asp-for="IsCreateLogin" class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
+                        <input asp-for="IsCreateLogin" class="form-check-input" type="checkbox" value="true">
                         <label class="form-check-label" for="flexCheckDefault">
                             Create Login [<span class="text-warning">Above email Id will be User Id </span>]
                         </label>
@@ -60,8 +61,10 @@
                 </div>
 
                 <div class="p-3">
-                    <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle">&nbsp;</i> Add Member</button>
-                    <a asp-controller="CenterAuthorityMember" asp-action="Index" class="btn btn-secondary">Back To Member List</a>
+                    <button type="submit" class="btn btn-primary" onclick="return verify_createLogin();">
+                        <i class="bi bi-check-circle">&nbsp;</i> Update </button>
+                    <a asp-controller="CenterAuthority"  asp-action="Index"
+                    asp-route-id="@Model.CenterAuthorityMember.TrainingCenterId" class="btn btn-secondary">Back To Member List</a>
                 </div>
             </div>
         </div>
@@ -73,5 +76,7 @@
     @{
     <partial name="_ValidationScriptsPartial" />
     }
+
+<script src="~/js/tp/authMember.js"></script>
 }
 

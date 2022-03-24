@@ -123,7 +123,7 @@ namespace NsdcTraingPartnerHub.Web.Areas.Identity.Pages.Account
                     Text = i,
                     Value = i
                 }),
-                TrainingCenterList = new SelectList(maper.Map<IList<TrainingCenter>, IList<TrainingCenterDto>>(
+                TrainingCenterList = new SelectList(maper.Map<IList<Core.Entities.TrainingCenter>, IList<TrainingCenterDto>>(
                     await unitOfWork.TrainingCenters.GetAll()), "Id", "Name")
             };
 
@@ -200,7 +200,7 @@ namespace NsdcTraingPartnerHub.Web.Areas.Identity.Pages.Account
                     Value = i
                 });
 
-            Input.TrainingCenterList = new SelectList(maper.Map<IList<TrainingCenter>, IList<TrainingCenterDto>>(
+            Input.TrainingCenterList = new SelectList(maper.Map<IList<Core.Entities.TrainingCenter>, IList<TrainingCenterDto>>(
                 await unitOfWork.TrainingCenters.GetAll()), "Id", "Name");
 
             // If we got this far, something failed, redisplay form

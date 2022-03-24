@@ -1,0 +1,75 @@
+﻿@model CreateTrainingCenterCourseDto
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post" asp-controller="TrainingCenterCourse">
+    <div class="row">
+        <div class="col-12">
+
+            <div class="border p-3 mt-4 row">
+                <div class="row pb-2">
+                    <h2 class="text-primary"> Add Course </h2>
+                    <hr />
+                </div>
+                <div asp-validation-summary="All" class="text-danger"> </div>
+
+                <div class="mb-3">
+                    <label for="SponsoringBody"></label>
+                    <select id="SponsoringBodyId" class="form-select" asp-items="@ViewBag.SponsiringBdyList">
+                        <option value=""> -- Select Sponsoring Body -- </option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Course"></label>
+                    <select asp-for="CourseId" class="form-select">
+                        <option value=""> -- Select Cousre -- </option>
+                    </select>
+                    <span asp-validation-for="CourseId" class="text-danger"></span>
+                </div>
+                <div class="mb-3 col-6">
+                    <label asp-for="Seats"></label>
+                    <input asp-for="Seats" class="form-control" />
+                    <span asp-validation-for="Seats" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3 col-6">
+                    <label>&nbsp;</label> <div class="form-check mt-1">
+
+                        <input asp-for="IsRegistrationOpen" class="form-check-input" type="checkbox">
+                        <label asp-for="IsRegistrationOpen"></label>
+                    </div>
+                    <span asp-validation-for="IsRegistrationOpen" class="text-danger"></span>
+                </div>
+
+                <div class="p-3">
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle">&nbsp;</i> Add</button>
+                    <a asp-controller="TrainingCenterCourse" asp-action="Index" class="btn btn-secondary">Back To List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    @{
+    <partial name="_ValidationScriptsPartial" />
+    }
+<script>
+           $(function () {
+        $("#SponsoringBodyId").on("change", function () {
+            var value = $(this).val();
+            $.post("@Url.Action("SponseringBodyByCourseList","Course")", { id: value }, function (data) {
+
+                PopulateDropDown("#CourseId", data);
+
+            });
+        });
+    });
+</script>
+
+}
+

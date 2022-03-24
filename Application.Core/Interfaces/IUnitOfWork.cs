@@ -19,5 +19,7 @@ namespace NsdcTraingPartnerHub.Core.Interfaces
         ISponsoringBodyRepository SponsoringBodies { get; }
         ITrainingCenterCourseRepository TrainingCenterCourses { get; }
         ICourseBatchRepository CourseBatches { get; }
+        IJobSectorRepository JobSectors { get; }
+
     }
 }

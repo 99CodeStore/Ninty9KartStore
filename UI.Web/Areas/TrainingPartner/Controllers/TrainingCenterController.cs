@@ -68,7 +68,7 @@ namespace NsdcTraingPartnerHub.Web.Areas.TrainingPartner.Controllers
             {
                 centerDto.Status = SD.TrainingCenetrStatus.ActiveCenter;
                 centerDto.TrainingPartner = null;
-                var trainingCenter = maper.Map<TrainingCenter>(centerDto);
+                var trainingCenter = maper.Map<Core.Entities.TrainingCenter>(centerDto);
 
                 await unitOfWork.TrainingCenters.Insert(trainingCenter);
                 await unitOfWork.Save();
